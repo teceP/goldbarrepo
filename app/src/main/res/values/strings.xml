@@ -1,4 +1,12 @@
 <resources>
-    <string name="app_name">goldbarlift</string>
+    <string name="app_name">Goldbar</string>
     <string name="title_activity_gmaps">Map</string>
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
+    <string name="buttonCreatePubcrawl">Create Event</string>
+    <string name="buttonPubcrawlsInYourArea">Pubcrawls in your area</string>
+    <string name="textViewTime">Date and Time:</string>
+    <string name="textViewAddress">Address:</string>
+    <string name="textViewCreateYourOwnPubcrawl">Create your on pubcrawl event!</string>
+
 </resources>

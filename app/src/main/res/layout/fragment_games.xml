@@ -4,6 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".drinkgames">
+    tools:context=".FragmentGames">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Gamesfragment"
+        android:textStyle="bold"
+        android:textSize="40dp"
+        android:gravity="center"/>
 
 </android.support.constraint.ConstraintLayout>
