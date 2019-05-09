@@ -28,8 +28,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:layout_marginLeft="36dp"
+        android:hint="Enter a address..."
         android:inputType="textPostalAddress"
-        android:text="Enter a address..."
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewAddress" />
 
@@ -61,19 +61,18 @@
         android:layout_width="252dp"
         android:layout_height="66dp"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="44dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:gravity="center"
         android:text="@string/buttonCreatePubcrawl"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/buttonPubcrawlsInYourArea"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextOptInformation"
+        app:layout_constraintVertical_bias="0.2"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -81,7 +80,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
-        android:layout_marginLeft="36dp"
+        android:layout_marginTop="84dp"
         android:text="Optional Information:"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextDate" />
@@ -91,10 +90,9 @@
         android:layout_width="344dp"
         android:layout_height="45dp"
         android:layout_marginStart="36dp"
-        android:layout_marginLeft="36dp"
         android:ems="10"
+        android:hint="Space for further informations..."
         android:inputType="textShortMessage|textAutoCorrect|text"
-        android:text="Space for further informations..."
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewPubcrawlText" />
 
@@ -116,8 +114,8 @@
         android:layout_marginStart="36dp"
         android:layout_marginLeft="36dp"
         android:ems="10"
+        android:hint="Enter a title here..."
         android:inputType="textPersonName"
-        android:text="Enter a title here..."
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
@@ -126,24 +124,26 @@
         android:layout_width="145dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
-        android:layout_marginLeft="36dp"
+        android:clickable="false"
         android:ems="10"
+        android:hint="Date..."
         android:inputType="date"
-        android:text="Date..."
+        android:onClick="showDatePickerDialog"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTime" />
 
     <EditText
         android:id="@+id/editTextTime"
+        android:clickable="false"
         android:layout_width="145dp"
         android:layout_height="45dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="64dp"
         android:ems="10"
+        android:hint="Time..."
+        android:onClick="showTimePickerDialog"
         android:inputType="time"
-        android:text="Time..."
-        app:layout_constraintStart_toEndOf="@+id/editTextDate"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textViewTime" />
 
     <Button
@@ -152,10 +152,8 @@
         android:layout_width="252dp"
         android:layout_height="66dp"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="124dp"
+        android:layout_marginBottom="72dp"
         android:gravity="center"
         android:text="@string/buttonPubcrawlsInYourArea"
         android:textSize="16sp"
@@ -163,6 +161,39 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonDate"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="147dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="8dp"
+        android:onClick="showDatePickerDialog"
+        android:text="Pick Date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/editTextDate"
+        app:layout_constraintTop_toBottomOf="@+id/editTextAddress" />
+
+    <Button
+        android:id="@+id/buttonTime"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="147dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="24dp"
+        android:onClick="showTimePickerDialog"
+        android:text="Pick Time"
+        app:layout_constraintBottom_toTopOf="@+id/editTextOptInformation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/editTextTime"
+        app:layout_constraintTop_toBottomOf="@+id/buttonDate"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </android.support.constraint.ConstraintLayout>

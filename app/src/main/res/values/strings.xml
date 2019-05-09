@@ -8,5 +8,9 @@
     <string name="textViewTime">Date and Time:</string>
     <string name="textViewAddress">Address:</string>
     <string name="textViewCreateYourOwnPubcrawl">Create your on pubcrawl event!</string>
+    <string name="back"><![CDATA[< Back]]></string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
