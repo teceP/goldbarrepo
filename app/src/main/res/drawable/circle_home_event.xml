@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item>
+
+        <shape
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape="ring"
+            android:innerRadius="26dp"
+            android:thickness="1dp"
+            android:useLevel="false">
+
+            <solid
+                android:color="#F44336"/>
+
+            <size
+                android:width="120dp"
+                android:height="120dp"/>
+
+        </shape>
+    </item>
+
+<item>
+
+    <shape
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:shape="ring"
+        android:innerRadius="25dp"
+        android:thickness="1dp"
+        android:useLevel="false">
+
+        <solid
+            android:color="#0E0A0A"/>
+
+        <size
+            android:width="120dp"
+            android:height="120dp"/>
+
+    </shape>
+</item>
+
+    <item>
+<shape
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:shape="ring"
+         android:innerRadius="27dp"
+         android:thickness="1dp"
+         android:useLevel="false">
+
+        <solid
+            android:color="#FFC107"/>
+
+        <size
+            android:width="120dp"
+            android:height="120dp"/>
+
+    </shape>
+
+    </item>
+
+    <item>
+        <shape android:shape="ring"
+            android:innerRadius="28dp"
+            android:thickness="1dp"
+            android:useLevel="false">
+
+            <size
+                android:width="120dp"
+                android:height="120dp" />
+
+            <solid android:color="#43000000" />
+        </shape>
+    </item>
+
+
+    </layer-list>

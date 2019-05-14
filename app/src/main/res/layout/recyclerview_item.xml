@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp"
+    android:clickable="true">
+
+
+    <View
+        android:id="@+id/colorView"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/circle_home_event"
+        android:clickable="true"
+        android:focusable="false"/>
+
+    <TextView
+        android:id="@+id/textViewEventName"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        android:clickable="true"/>
+
+</LinearLayout>
