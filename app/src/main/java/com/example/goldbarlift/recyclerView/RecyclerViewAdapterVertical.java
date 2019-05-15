@@ -1,62 +1,71 @@
 package com.example.goldbarlift.recyclerView;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.goldbarlift.R;
 import com.example.goldbarlift.collections.Event;
 
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
+public class RecyclerViewAdapterVertical extends RecyclerView.Adapter<RecyclerViewAdapterVertical.ViewHolder>{
 
-    private List<Integer> viewColors;
+    private List<Drawable> viewDrawable;
     private List<Event> events;
     private LayoutInflater inflater;
-    private ItemClickListener clickListener;
+    private RecyclerViewAdapterVertical.ItemClickListener clickListener;
 
-    public RecyclerViewAdapter(Context context, List<Integer> viewColors, List<Event> events){
+    public RecyclerViewAdapterVertical(Context context, List<Drawable> viewDrawable, List<Event> events){
         this.inflater = LayoutInflater.from(context);
-        this.viewColors = viewColors;
+        this.viewDrawable = viewDrawable;
         this.events = events;
     }
 
     /**
-     * Another constructor, which sets the colors automatically to blue.
+     * Another constructor, which sets the image automatically to a artful default picture.
      * @param context
      * @param events
      */
-    public RecyclerViewAdapter(Context context, List<Event> events){
+    public RecyclerViewAdapterVertical(Context context, List<Event> events){
         this.inflater = LayoutInflater.from(context);
-        this.viewColors.add(Color.BLUE);
+
+        //Default background pictures as many as events found
+        for(int i = 0; i < events.size(); i++){
+            this.viewDrawable.add(context.getResources().getDrawable(R.drawable.ic_action_name, null));
+        }
+
         this.events = events;
     }
 
-
     @Override
     @NonNull
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
-        View view = this.inflater.inflate(R.layout.recyclerview_item, parent, false);
-        return new ViewHolder(view);
+    public RecyclerViewAdapterVertical.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
+        View view = this.inflater.inflate(R.layout.recyclerview_bottom_item, parent, false);
+        return new RecyclerViewAdapterVertical.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position){
+    public void onBindViewHolder(@NonNull RecyclerViewAdapterVertical.ViewHolder holder, int position){
         //Hier Farbe aus Farbenarray
         //int color = this.viewColors.get(0);
         Event event = this.events.get(position);
-       // holder.myView.setBackgroundColor(color);
+        // holder.myView.setBackgroundColor(color);
 
         //HIER TAG ANSTATT ID WENN FERTIG
-        holder.myTextView.setText(event.getTag());
+        holder.textView.setText(event.getTag() + " : " + event.getAddressFormatted() + " : " + " : " + event.getDateFormatted());
+
+        //holder.imageView.setImageDrawable(getDrawable());
     }
 
     @Override
@@ -65,14 +74,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
-        View myView;
-        TextView myTextView;
+        TextView textView;
+        ImageView imageView;
 
         //Hier wird Text und Farbe des List Items bestimmt
         ViewHolder(View itemView){
             super(itemView);
-            myView = itemView.findViewById(R.id.colorView);
-            myTextView = itemView.findViewById(R.id.textViewEventName);
+            textView = itemView.findViewById(R.id.textViewRecyclerViewBottomEventTitle);
+            imageView = itemView.findViewById(R.id.imageViewRecyclerViewBottomEventImage);
         }
 
         @Override
