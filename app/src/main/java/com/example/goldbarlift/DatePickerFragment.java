@@ -36,6 +36,7 @@ public class DatePickerFragment extends DialogFragment
             }
         }, year, month, day);
     }
+
     public void setOnDateClickListener(onDateClickListener onDateClickListener){
         if(onDateClickListener != null){
             this.onDateClickListener = onDateClickListener;

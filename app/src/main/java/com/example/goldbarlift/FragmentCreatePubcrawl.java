@@ -1,6 +1,8 @@
 package com.example.goldbarlift;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,12 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.goldbarlift.pubcrawl.Pubcrawl;
 
-public class FragmentCreatePubcrawl extends Fragment implements View.OnClickListener {
+public class FragmentCreatePubcrawl extends Fragment implements View.OnClickListener, TimePickerFragment.onTimeClickListener, DatePickerFragment.onDateClickListener {
     private Button buttonCreatePubcrawl;
     //private Button buttonPubcrawlsInYourArea;
     private EditText editTextTag;
@@ -30,6 +34,7 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
     private TimePickerDialog timepicker;
     private DatePickerDialog datepicker;
     private Button buttonTimePicker;
+    private Button buttonDatePicker;
 
     private View thisView;
 
@@ -38,24 +43,31 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
         this.thisView =  inflater.inflate(R.layout.fragment_create_pubcrawl, container, false);
 
         //findByView
+        buttonDatePicker = this.thisView.findViewById(R.id.buttonDate);
+        buttonDatePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment dialogFragment = new DatePickerFragment();
+                dialogFragment.show(getFragmentManager(), "datePicker");
+            }
+        });
 
         buttonTimePicker = this.thisView.findViewById(R.id.buttonTime);
         buttonTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment newFragment = new TimePickerFragment();
-                newFragment.show(getFragmentManager(), "timePicker");
+                DialogFragment dialogFragment = new TimePickerFragment();
+                dialogFragment.show(getFragmentManager(), "timePicker");
             }
         });
 
         editTextTag = this.thisView.findViewById(R.id.editTextTag);
         editTextOptInformation = this.thisView.findViewById(R.id.editTextOptInformation);
         editTextAddress = this.thisView.findViewById(R.id.editTextAddress);
+
         editTextDate = this.thisView.findViewById(R.id.editTextDate);
 
         editTextTime = this.thisView.findViewById(R.id.editTextTime);
-        editTextTime = this.thisView.findViewById(R.id.editTextTime);
-
 
         buttonCreatePubcrawl = this.thisView.findViewById(R.id.buttonCreatePubcrawl);
         buttonCreatePubcrawl.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +79,7 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
                         editTextAddress.getText().toString().equals("") || editTextTag.getText().toString().equals("")){
                     Toast.makeText(getActivity(), "please enter all necessary information", Toast.LENGTH_LONG).show();
                 }else{
+
                     //Split date into year, month, day x cast String to int
                     String[] dateStrings = editTextDate.getText().toString().split("/");
                     int[] date = new int[dateStrings.length];
@@ -129,5 +142,15 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
                // break;
         }
 
+    }
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+        this.editTextDate.setText( i+ "/" + i1 + "/" + i2);
+    }
+
+    @Override
+    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+        this.editTextTime.setText(""+i+":"+i1);
     }
 }
