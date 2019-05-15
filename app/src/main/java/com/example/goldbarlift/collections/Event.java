@@ -26,6 +26,16 @@ public class Event {
         this.address = address;
     }
 
+    public Event(String tag, Date date, Address address) throws NumberOfCharactersToLongException {
+        if(tag.length() > 10){
+            throw new NumberOfCharactersToLongException(tag);
+        }
+        this.tag = tag;
+        this.ID = generateNewId();
+        this.date = date;
+        this.address = address;
+    }
+
     public Date getDateFormatted(){
         return this.date;
     }

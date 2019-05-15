@@ -3,16 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="185dp"
     android:orientation="horizontal"
-    android:clickable="true"
-    android:padding="5dp">
+    android:clickable="true">
 
-    <View
+    <ImageView
+        android:id="@+id/imageViewRecyclerViewBottomEventImage"
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        android:backgroundTint="#E9E7E7" />
-
+        android:background="@color/white"
+        android:fadingEdge="horizontal|vertical" />
 
     <TextView
         android:id="@+id/textViewRecyclerViewBottomEventTitle"
@@ -20,22 +20,19 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:backgroundTint="#E9E7E7"
+        android:textColor="@color/black"
         android:text="Your Text here..."
         android:textAlignment="center"
         android:textSize="17sp"
         android:textStyle="bold" />
 
-    <ImageView
-        android:id="@+id/imageViewRecyclerViewBottomEventImage"
-        android:layout_width="match_parent"
-        android:layout_height="180dp" />
-
     <Switch
-        android:id="@+id/switch1"
+        android:id="@+id/switchNoticeEvent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="Switch" />
+        android:paddingLeft="360dp"
+        android:paddingTop="159dp"
+        android:gravity="bottom|right"
+        android:theme="@style/SwitchTheme"/>
 
 </FrameLayout>

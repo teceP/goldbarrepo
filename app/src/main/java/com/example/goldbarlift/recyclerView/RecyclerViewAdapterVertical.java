@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.example.goldbarlift.R;
 import com.example.goldbarlift.collections.Event;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class RecyclerViewAdapterVertical extends RecyclerView.Adapter<RecyclerViewAdapterVertical.ViewHolder>{
@@ -39,10 +40,11 @@ public class RecyclerViewAdapterVertical extends RecyclerView.Adapter<RecyclerVi
      */
     public RecyclerViewAdapterVertical(Context context, List<Event> events){
         this.inflater = LayoutInflater.from(context);
+        this.viewDrawable = new LinkedList<>();
 
         //Default background pictures as many as events found
         for(int i = 0; i < events.size(); i++){
-            this.viewDrawable.add(context.getResources().getDrawable(R.drawable.ic_action_name, null));
+            this.viewDrawable.add(context.getResources().getDrawable(R.drawable.standart_recycl_background, null));
         }
 
         this.events = events;

@@ -9,8 +9,6 @@
         android:roundIcon="@mipmap/applogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PubcrawlsInAreaActivity"></activity>
-        <activity android:name=".PubcrawlActivity" />
         <activity android:name=".FavoritesActivity" />
         <activity android:name=".MapsActivity" />
         <activity android:name=".mainScreenActivity" />

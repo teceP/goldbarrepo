@@ -8,9 +8,9 @@
     </item>
 
     <item
-        android:id="@+id/nav_list"
-        android:icon="@drawable/ic_list_black_24dp"
-        android:title="List">
+        android:id="@+id/nav_pubcrawl"
+        android:icon="@drawable/ic_group_black_24dp"
+        android:title="Pubcrawl">
     </item>
 
     <item

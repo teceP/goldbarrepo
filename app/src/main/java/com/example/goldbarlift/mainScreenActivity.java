@@ -1,5 +1,7 @@
 package com.example.goldbarlift;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -17,7 +19,11 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class mainScreenActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -67,10 +73,16 @@ public class mainScreenActivity extends AppCompatActivity implements NavigationV
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //Username
+        TextView navHeader = findViewById(R.id.navHeaderName);
+        //navHeader.setText("Mario");
+
         drawer = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setFocusableInTouchMode(true);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.bringToFront();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -80,9 +92,6 @@ public class mainScreenActivity extends AppCompatActivity implements NavigationV
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch(menuItem.getItemId()){
-            case R.id.menu_pubcrawl:
-                startActivity(new Intent(mainScreenActivity.this, PubcrawlActivity.class));
-                break;
             case R.id.menu_chat:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentChat()).commit();
                 break;
@@ -121,13 +130,14 @@ public class mainScreenActivity extends AppCompatActivity implements NavigationV
                 case R.id.nav_home:
                     selectedFragment = new FragmentHome();
                     break;
-                case R.id.nav_list:
-                    selectedFragment = new FragmentList();
+                case R.id.nav_pubcrawl:
+                    selectedFragment = new FragmentPubcrawlsInArea();
                     break;
                 case R.id.nav_map:
                     startActivity(new Intent(mainScreenActivity.this, MapsActivity.class));
                     break;
             }
+
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
             return true;
         }

@@ -12,17 +12,13 @@
             android:icon="@drawable/ic_favorite_black_24dp"
             android:title="Favorites" />
         <item
-            android:id="@+id/menu_pubcrawl"
-            android:icon="@drawable/ic_group_black_24dp"
-            android:title="Pubcrawl"/>
-        <item
             android:id="@+id/menu_chat"
             android:icon="@drawable/ic_chat_black_24dp"
-            android:title="Chat" />
+            android:title="Chat - placeholder" />
         <item
             android:id="@+id/menu_game"
             android:icon="@drawable/ic_game_black_24dp"
-            android:title="Games" />
+            android:title="Games - placeholder" />
     </group>
 
     <item android:title="Infos and Donation">

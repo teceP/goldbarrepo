@@ -20,6 +20,11 @@ public class Address {
         this.infos = infos;
     }
 
+    @Override
+    public String toString(){
+        return "" + infos[0] + " " + infos[1] + ", " + infos[2] + " " + infos[3];
+    }
+
     public String getStreet(){
         return this.infos[0];
     }

@@ -28,6 +28,7 @@ public class FragmentHome extends Fragment implements RecyclerViewAdapter.ItemCl
 
     private RecyclerViewAdapter adapterTop;
     private RecyclerViewAdapterVertical adapterBottom;
+    private Drawable drawableRecycleVerticalBackground;
 
 
     @Nullable
@@ -39,7 +40,7 @@ public class FragmentHome extends Fragment implements RecyclerViewAdapter.ItemCl
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+       // this.drawableRecycleVerticalBackground = getResources().getDrawable(R.drawable.standart_image, null);
 
     }
 
@@ -51,30 +52,30 @@ public class FragmentHome extends Fragment implements RecyclerViewAdapter.ItemCl
         colors.add(Color.BLUE);
 
         ArrayList<Drawable> images = new ArrayList<>();
-        images.add(getResources().getDrawable(R.drawable.standart_image));
+        images.add(getResources().getDrawable(R.drawable.standart_recycl_background, null));
 
         ArrayList<Event> eventsTop = new ArrayList<>();
         ArrayList<Event> eventsBottom = new ArrayList<>();
 
 
         try {
-            eventsTop.add(new Event("HEY", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_image, null)));
-            eventsTop.add(new Event("WHEY", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_image, null)));
-            eventsTop.add(new Event("BERLIN", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_image, null)));
-            eventsTop.add(new Event("HOORAY", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_image, null)));
-            eventsTop.add(new Event("HAMBG", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_image, null)));
-            eventsTop.add(new Event("lol", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_image, null)));
-            eventsTop.add(new Event("tre", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_image, null)));
-            eventsTop.add(new Event("rlly", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_image, null)));
+            eventsTop.add(new Event("HEY", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_recycl_background, null)));
+            eventsTop.add(new Event("WHEY", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_recycl_background, null)));
+            eventsTop.add(new Event("BERLIN", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_recycl_background, null)));
+            eventsTop.add(new Event("HOORAY", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_recycl_background, null)));
+            eventsTop.add(new Event("HAMBG", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_recycl_background, null)));
+            eventsTop.add(new Event("lol", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_recycl_background, null)));
+            eventsTop.add(new Event("tre", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_recycl_background, null)));
+            eventsTop.add(new Event("rlly", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_recycl_background, null)));
 
-            eventsBottom.add(new Event("HEY", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_image, null)));
-            eventsBottom.add(new Event("WHEY", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_image, null)));
-            eventsBottom.add(new Event("BERLIN", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_image, null)));
-            eventsBottom.add(new Event("HOORAY", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_image, null)));
-            eventsBottom.add(new Event("HAMBG", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_image, null)));
-            eventsBottom.add(new Event("lol", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_image, null)));
-            eventsBottom.add(new Event("tre", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_image, null)));
-            eventsBottom.add(new Event("rlly", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_image, null)));
+            eventsBottom.add(new Event("HEY", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_recycl_background, null)));
+            eventsBottom.add(new Event("WHEY", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_recycl_background, null)));
+            eventsBottom.add(new Event("BERLIN", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_recycl_background, null)));
+            eventsBottom.add(new Event("HOORAY", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_recycl_background, null)));
+            eventsBottom.add(new Event("HAMBG", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_recycl_background, null)));
+            eventsBottom.add(new Event("lol", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_recycl_background, null)));
+            eventsBottom.add(new Event("tre", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_recycl_background, null)));
+            eventsBottom.add(new Event("rlly", new Date(), new Address(), this.getResources().getDrawable(R.drawable.standart_recycl_background, null)));
         } catch (NumberOfCharactersToLongException e) {
             e.printStackTrace();
         }

@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".mainScreenActivity"
-    tools:showIn="navigation_view">
+    tools:showIn="navigation_view"
+    android:background="@color/mainScreenGrey">
     
     <android.support.v4.widget.DrawerLayout
         android:layout_width="match_parent"
@@ -14,6 +15,16 @@
         android:fitsSystemWindows="true"
         tools:clickable="true"
         tools:openDrawer="start">
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/nav_view"
+            android:background="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:menu="@menu/top_left_menu"
+            app:headerLayout="@layout/nav_header"
+            tools:layout_height="match_parent"/>
 
         <LinearLayout
             android:id="@+id/linearLayoutMainsceenActivity"
@@ -26,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/actionBarSize"
                 android:elevation="4dp"
-                android:background="@color/colorPrimaryDark"
+                android:background="@color/actionBarColor"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
@@ -35,16 +46,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>
-
-        <android.support.design.widget.NavigationView
-            android:id="@+id/nav_view"
-            android:background="@color/white"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            app:headerLayout="@layout/nav_header"
-            app:menu="@menu/top_left_menu"
-            tools:layout_height="match_parent"/>
 
     </android.support.v4.widget.DrawerLayout>
 
@@ -62,6 +63,7 @@
         android:layout_alignParentBottom="true"
         app:itemTextColor="@color/black"
         app:itemIconTint="@color/black"
-        app:menu="@menu/bottom_navigation"/>
+        app:menu="@menu/bottom_navigation"
+        android:background="@color/white"/>
 
 </RelativeLayout>
