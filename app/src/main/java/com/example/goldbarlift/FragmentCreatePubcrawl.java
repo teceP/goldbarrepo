@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -41,8 +42,17 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.thisView =  inflater.inflate(R.layout.fragment_create_pubcrawl, container, false);
-
-        //findByView
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+        //DATE INSERT
+        editTextDate = this.thisView.findViewById(R.id.editTextDate);
+        editTextDate.setEnabled(false);
+        editTextDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment dialogFragment = new DatePickerFragment();
+                dialogFragment.show(getFragmentManager(), "datePicker");
+            }
+        });
         buttonDatePicker = this.thisView.findViewById(R.id.buttonDate);
         buttonDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,7 +61,17 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
                 dialogFragment.show(getFragmentManager(), "datePicker");
             }
         });
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+        //TIME INSERT
+        editTextTime = this.thisView.findViewById(R.id.editTextTime);
+        editTextTime.setEnabled(false);
+        editTextTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment dialogFragment = new TimePickerFragment();
+                dialogFragment.show(getFragmentManager(), "timePicker");
+            }
+        });
         buttonTimePicker = this.thisView.findViewById(R.id.buttonTime);
         buttonTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,15 +80,14 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
                 dialogFragment.show(getFragmentManager(), "timePicker");
             }
         });
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 
         editTextTag = this.thisView.findViewById(R.id.editTextTag);
         editTextOptInformation = this.thisView.findViewById(R.id.editTextOptInformation);
         editTextAddress = this.thisView.findViewById(R.id.editTextAddress);
 
-        editTextDate = this.thisView.findViewById(R.id.editTextDate);
-
-        editTextTime = this.thisView.findViewById(R.id.editTextTime);
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+        //CREATE PUBCRAWL EVENT
         buttonCreatePubcrawl = this.thisView.findViewById(R.id.buttonCreatePubcrawl);
         buttonCreatePubcrawl.setOnClickListener(new View.OnClickListener() {
 
@@ -81,28 +100,42 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
                 }else{
 
                     //Split date into year, month, day x cast String to int
-                    String[] dateStrings = editTextDate.getText().toString().split("/");
+                    String[] dateStrings = editTextDate.getText().toString().split("\\.");
                     int[] date = new int[dateStrings.length];
                     for(int i = 0; i < dateStrings.length; i++){
                         date[i] = Integer.parseInt(dateStrings[i]);
                     }
 
                     //Split time into hour, minute x cast String to int
-                    String[] timeStrings = editTextTime.getText().toString().split(":");
-                    int[] time = new int[dateStrings.length];
+                    String[] timeStrings = editTextTime.getText().toString().split("\\:");
+                    int[] time = new int[timeStrings.length];
                     for(int i = 0; i < timeStrings.length; i++){
-                        time[i] = Integer.parseInt(dateStrings[i]);
+                        time[i] = Integer.parseInt(timeStrings[i]);
                     }
 
                     //date[0] = year, [1] = month, [2] = day
                     //time[0] = hour, [1] = minute
                     //String address, String tag, int minute, int hour, int day, int month, int year
-                    Pubcrawl pubcrawl = new Pubcrawl(editTextAddress.getText().toString(), editTextTag.getTag().toString(),
-                            time[1], time[0], date[2], date[1], date[0]);
+
+                    try {
+                    String addresse = editTextAddress.getText().toString();
+                    String tag = editTextTag.getText().toString();
+                        Pubcrawl pubcrawl = new Pubcrawl(addresse, tag, time[1], time[0], date[2], date[1], date[0]);
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+                        //HIER NEUES EVENT HOCHLADEN
+
+
+                        Toast.makeText(getActivity(), "Event is now live & public", Toast.LENGTH_LONG).show();
+                        getFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentPubcrawlsInArea()).commit();
+                    } catch (Exception e) {
+                        Toast.makeText(getActivity(), "event has not been created, check your inputs", Toast.LENGTH_LONG).show();
+                    }
+
 
                     //Upload to database x "invoke" people in area
                     // uploadPubcrawlEvent(pubcrawl);
                 }
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
                 //pubcrawl = new Pubcrawl(editTextAddress.getText(), editTextTag.getTag(), editTextTime.get)
@@ -114,6 +147,7 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
         // buttonPubcrawlsInYourArea.setOnClickListener(this);
 
 
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
 
         return thisView;

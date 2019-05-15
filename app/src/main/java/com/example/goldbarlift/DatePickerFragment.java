@@ -11,11 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.Calendar;
 
 
-public class DatePickerFragment extends DialogFragment
+public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener
 {
     private onDateClickListener onDateClickListener;
 
@@ -29,12 +32,7 @@ public class DatePickerFragment extends DialogFragment
         int day = c.get(Calendar.DAY_OF_MONTH);
 
         // Create a new instance of DatePickerDialog and return it
-        return new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                onDateClickListener.onDateSet(datePicker,i, i1, i2);
-            }
-        }, year, month, day);
+        return new DatePickerDialog(getActivity(), this, year, month, day);
     }
 
     public void setOnDateClickListener(onDateClickListener onDateClickListener){
@@ -43,8 +41,14 @@ public class DatePickerFragment extends DialogFragment
         }
     }
 
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        TextView tv = getActivity().findViewById(R.id.editTextDate);
+        tv.setText(dayOfMonth + "." + month + "." + year);
+    }
 
-interface onDateClickListener {
+
+    interface onDateClickListener {
     void onDateSet(DatePicker datePicker, int i, int i1, int i2);
 }
 

@@ -11,11 +11,13 @@
         android:id="@+id/imageViewRecyclerViewBottomEventImage"
         android:layout_width="match_parent"
         android:layout_height="180dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
         android:background="@color/white"
         android:fadingEdge="horizontal|vertical" />
 
     <TextView
-        android:id="@+id/textViewRecyclerViewBottomEventTitle"
+        android:id="@+id/textViewRecyclerViewBottomTag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -25,6 +27,26 @@
         android:textAlignment="center"
         android:textSize="17sp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textViewRecyclerViewBottomTime"
+        android:text="Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:textColor="@color/black"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="127dp" />
+
+    <TextView
+        android:id="@+id/textViewRecyclerViewBottomAddress"
+        android:text="Addresse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:textColor="@color/black"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="146dp" />
 
     <Switch
         android:id="@+id/switchNoticeEvent"

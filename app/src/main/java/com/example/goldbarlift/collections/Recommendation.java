@@ -12,7 +12,7 @@ public class Recommendation extends Event {
 
     private Image image;
 
-    public Recommendation(String tag, Date date, Address address, Drawable drawable) throws NumberOfCharactersToLongException {
-        super(tag, date, address, drawable);
+    public Recommendation(String tag, Date date, String address, int minute, int hour, Drawable drawable) throws NumberOfCharactersToLongException {
+        super(tag, date, address, minute, hour, drawable);
     }
 }

@@ -1,11 +1,7 @@
 package com.example.goldbarlift.recyclerView;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -44,7 +40,7 @@ public class RecyclerViewAdapterVertical extends RecyclerView.Adapter<RecyclerVi
 
         //Default background pictures as many as events found
         for(int i = 0; i < events.size(); i++){
-            this.viewDrawable.add(context.getResources().getDrawable(R.drawable.standart_recycl_background, null));
+            this.viewDrawable.add(context.getResources().getDrawable(R.drawable.standart1, null));
         }
 
         this.events = events;
@@ -65,9 +61,13 @@ public class RecyclerViewAdapterVertical extends RecyclerView.Adapter<RecyclerVi
         // holder.myView.setBackgroundColor(color);
 
         //HIER TAG ANSTATT ID WENN FERTIG
-        holder.textView.setText(event.getTag() + " : " + event.getAddressFormatted() + " : " + " : " + event.getDateFormatted());
+        holder.textViewTag.setText(event.getTag());
+        holder.textViewAddress.setText(event.getAddressFormatted());
+        holder.textViewTime.setText(event.getHour() + ":" + event.getMinute());
 
         //holder.imageView.setImageDrawable(getDrawable());
+        holder.imageView.setImageDrawable(event.getDrawable());
+
     }
 
     @Override
@@ -76,13 +76,17 @@ public class RecyclerViewAdapterVertical extends RecyclerView.Adapter<RecyclerVi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
-        TextView textView;
+        TextView textViewTag;
+        TextView textViewAddress;
+        TextView textViewTime;
         ImageView imageView;
 
         //Hier wird Text und Farbe des List Items bestimmt
         ViewHolder(View itemView){
             super(itemView);
-            textView = itemView.findViewById(R.id.textViewRecyclerViewBottomEventTitle);
+            textViewTag = itemView.findViewById(R.id.textViewRecyclerViewBottomTag);
+            textViewAddress = itemView.findViewById(R.id.textViewRecyclerViewBottomAddress);
+            textViewTime = itemView.findViewById(R.id.textViewRecyclerViewBottomTime);
             imageView = itemView.findViewById(R.id.imageViewRecyclerViewBottomEventImage);
         }
 

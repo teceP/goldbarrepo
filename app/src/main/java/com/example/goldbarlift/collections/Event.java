@@ -13,9 +13,11 @@ public class Event {
     private String tag;
     private Drawable drawable;
     private Date date;
-    private Address address;
+    private String address;
+    private int minute;
+    private int hour;
 
-    public Event(String tag, Date date, Address address, Drawable drawable) throws NumberOfCharactersToLongException {
+    public Event(String tag, Date date, String address, int minute, int hour, Drawable drawable) throws NumberOfCharactersToLongException {
         if(tag.length() > 10){
            throw new NumberOfCharactersToLongException(tag);
         }
@@ -23,10 +25,12 @@ public class Event {
         this.tag = tag;
         this.ID = generateNewId();
         this.date = date;
+        this.minute = minute;
+        this.hour = hour;
         this.address = address;
     }
 
-    public Event(String tag, Date date, Address address) throws NumberOfCharactersToLongException {
+    public Event(String tag, Date date, String address, int minute, int hour) throws NumberOfCharactersToLongException {
         if(tag.length() > 10){
             throw new NumberOfCharactersToLongException(tag);
         }
@@ -34,13 +38,23 @@ public class Event {
         this.ID = generateNewId();
         this.date = date;
         this.address = address;
+        this.minute = minute;
+        this.hour = hour;
+    }
+
+    public int getMinute(){
+        return this.minute;
+    }
+
+    public int getHour(){
+        return this.hour;
     }
 
     public Date getDateFormatted(){
         return this.date;
     }
 
-    public Address getAddressFormatted(){
+    public String getAddressFormatted(){
         return this.address;
     }
 
@@ -48,7 +62,7 @@ public class Event {
         this.drawable = drawable;
     }
 
-    public Drawable getdrawable(){
+    public Drawable getDrawable(){
         return this.drawable;
     }
 
@@ -71,3 +85,5 @@ public class Event {
         return this.ID + "";
     }
 }
+
+

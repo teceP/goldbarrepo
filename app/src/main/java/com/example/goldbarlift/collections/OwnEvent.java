@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class OwnEvent extends Event{
 
-    public OwnEvent(String tag, Date date, Address address, Drawable drawable) throws NumberOfCharactersToLongException {
-        super(tag, date, address, drawable);
+    public OwnEvent(String tag, Date date, String address, int minute, int hour, Drawable drawable) throws NumberOfCharactersToLongException {
+        super(tag, date, address, minute, hour, drawable);
     }
 }

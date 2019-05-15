@@ -140,11 +140,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:clickable="false"
+        android:focusable="false"
         android:editable="false"
         android:ems="10"
+        android:freezesText="true"
         android:hint="Date..."
-        android:inputType="date"
-        android:onClick="showDatePickerDialog"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTime" />
 
@@ -155,11 +155,10 @@
         android:layout_height="45dp"
         android:layout_marginStart="36dp"
         android:layout_marginTop="64dp"
+        android:focusable="false"
         android:editable="false"
         android:ems="10"
         android:hint="Time..."
-        android:onClick="showTimePickerDialog"
-        android:inputType="time"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textViewTime" />
 
