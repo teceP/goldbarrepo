@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,7 @@ import com.example.goldbarlift.pubcrawl.Pubcrawl;
 
 public class FragmentCreatePubcrawl extends Fragment implements View.OnClickListener {
     private Button buttonCreatePubcrawl;
-    private Button buttonPubcrawlsInYourArea;
+    //private Button buttonPubcrawlsInYourArea;
     private EditText editTextTag;
     private EditText editTextOptInformation;
     private EditText editTextAddress;
@@ -25,9 +26,10 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
 
     private EditText editTextTime;
     private TimePickerDialog timePickerDialog;
-
+    private DatePickerDialog datePickerDialog;
     private TimePickerDialog timepicker;
     private DatePickerDialog datepicker;
+    private Button buttonTimePicker;
 
     private View thisView;
 
@@ -36,6 +38,16 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
         this.thisView =  inflater.inflate(R.layout.fragment_create_pubcrawl, container, false);
 
         //findByView
+
+        buttonTimePicker = this.thisView.findViewById(R.id.buttonTime);
+        buttonTimePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment newFragment = new TimePickerFragment();
+                newFragment.show(getFragmentManager(), "timePicker");
+            }
+        });
+
         editTextTag = this.thisView.findViewById(R.id.editTextTag);
         editTextOptInformation = this.thisView.findViewById(R.id.editTextOptInformation);
         editTextAddress = this.thisView.findViewById(R.id.editTextAddress);
@@ -85,8 +97,10 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
         });
 
 
-        buttonPubcrawlsInYourArea = this.thisView.findViewById(R.id.buttonPubcrawlsInYourArea);
-        buttonPubcrawlsInYourArea.setOnClickListener(this);
+        // buttonPubcrawlsInYourArea = this.thisView.findViewById(R.id.buttonPubcrawlsInYourArea);  Herausgenommen weil unnoetig
+        // buttonPubcrawlsInYourArea.setOnClickListener(this);
+
+
 
 
         return thisView;
@@ -100,14 +114,19 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
 
     }
 
+
+    public void showDatePickerDialog(){
+
+    }
+
     @Override
     public void onClick(View v) {
 
         switch(v.getId()){
-            case R.id.buttonPubcrawlsInYourArea:
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentPubcrawlsInArea()).commit();
+           // case R.id.buttonPubcrawlsInYourArea:
+             //   getFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentPubcrawlsInArea()).commit();
 
-                break;
+               // break;
         }
 
     }
