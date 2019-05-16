@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="350dp"
+    android:layout_height="180dp"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:layout_marginTop="240dp"
+    android:layout_marginLeft="33dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Push Notifications:"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="16dp"/>
+
+    <Switch
+        android:id="@+id/switchPushNotification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:layout_marginStart="16dp"/>
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="68dp"
+        android:text="Maximum distance:" />
+
+    <TextView
+        android:id="@+id/kmTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="225dp"
+        android:layout_marginTop="110dp"
+        android:text="00 km" />
+
+
+    <SeekBar
+        android:id="@+id/distanceSeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginTop="90dp"
+        android:max="50"
+        android:min="0" />
+
+    <Button
+        android:id="@+id/applySettings"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="370dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="130dp"
+        android:layout_marginLeft="0dp"
+        android:text="apply" />
+
+</RelativeLayout>

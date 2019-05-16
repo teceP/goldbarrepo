@@ -1,31 +1,22 @@
 package com.example.goldbarlift;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.LinkedList;
-import java.util.List;
-
-public class mainScreenActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainScreenActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
 
@@ -96,10 +87,14 @@ public class mainScreenActivity extends AppCompatActivity implements NavigationV
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentChat()).commit();
                 break;
             case R.id.menu_fav:
-                startActivity(new Intent(mainScreenActivity.this, FavoritesActivity.class));
+                startActivity(new Intent(MainScreenActivity.this, FavoritesActivity.class));
                 break;
-            case R.id.menu_game:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentGames()).commit();
+            case R.id.menu_settings:
+                FragmentManager fm = getSupportFragmentManager();
+                SettingsDialogFragment sdf = SettingsDialogFragment.newInstance("title");
+                sdf.show(fm, "settings_title");
+
+                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsDialogFragment()).addToBackStack("tag").commit();
                 break;
             case R.id.donate:
                 Toast.makeText(this, "Paypal Email: mario.teklic77@googlemail.com :)", Toast.LENGTH_LONG).show();
@@ -134,7 +129,7 @@ public class mainScreenActivity extends AppCompatActivity implements NavigationV
                     selectedFragment = new FragmentPubcrawlsInArea();
                     break;
                 case R.id.nav_map:
-                    startActivity(new Intent(mainScreenActivity.this, MapsActivity.class));
+                    startActivity(new Intent(MainScreenActivity.this, MapsActivity.class));
                     break;
             }
 

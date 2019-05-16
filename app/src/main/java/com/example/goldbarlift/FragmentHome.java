@@ -112,17 +112,27 @@ public class FragmentHome extends Fragment implements RecyclerViewAdapter.ItemCl
         recyclerViewBottom.setAdapter(adapterBottom);
     }
 
+
     @Override
-    public void onItemClick(View view, int position){
-        Toast.makeText(getActivity(),"You clicked " + adapterTop.getItem(position) + " on item position " + position, Toast.LENGTH_LONG).show();
+    public void onItemClickHorizontal(View view, int position) {
+        Toast.makeText(view.getContext(), "adsdasdas", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onLongItemClickHorizontal(View view, int position) {
+        Toast.makeText(view.getContext(), "adsdasdas", Toast.LENGTH_LONG).show();
 
     }
 
     @Override
-    public void onLongItemClick(View view, int position) {
-        Toast.makeText(getActivity(),"You LONG clicked " + adapterTop.getItem(position) + " on item position " + position, Toast.LENGTH_LONG).show();
+    public void onItemClickVertical(View view, int position) {
+        Toast.makeText(view.getContext(), "adsdasdas", Toast.LENGTH_LONG).show();
 
     }
 
+    @Override
+    public void onLongItemClickVertical(View view, int position) {
+        Toast.makeText(view.getContext(), "adsdasdas", Toast.LENGTH_LONG).show();
 
+    }
 }

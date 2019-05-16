@@ -21,7 +21,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private List<Integer> viewColors;
     private List<Event> events;
     private LayoutInflater inflater;
-    private ItemClickListener clickListener;
+    private RecyclerViewAdapter.ItemClickListener clickListener;
 
     public RecyclerViewAdapter(Context context, List<Integer> viewColors, List<Event> events){
         this.inflater = LayoutInflater.from(context);
@@ -78,7 +78,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         @Override
         public void onClick(View view){
             if(clickListener != null) {
-                clickListener.onItemClick(view, getAdapterPosition());
+                clickListener.onItemClickHorizontal(view, getAdapterPosition());
             }
         }
 
@@ -97,8 +97,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public interface ItemClickListener{
-        void onItemClick(View view, int position);
-        void onLongItemClick(View view, int position);
+        void onItemClickHorizontal(View view, int position);
+        void onLongItemClickHorizontal(View view, int position);
     }
 
 }

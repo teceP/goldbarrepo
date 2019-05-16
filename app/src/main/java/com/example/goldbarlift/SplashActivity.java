@@ -8,7 +8,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class splashActivity extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity {
     private TextView tv;
     private ImageView iv;
 
@@ -22,7 +22,7 @@ public class splashActivity extends AppCompatActivity {
         Animation myAnimation = AnimationUtils.loadAnimation(this, R.anim.mytransition);
         tv.startAnimation(myAnimation);
         iv.startAnimation(myAnimation);
-        final Intent i = new Intent(this, mainScreenActivity.class);
+        final Intent i = new Intent(this, MainScreenActivity.class);
         Thread timer = new Thread(){
             public void run() {
                 try {

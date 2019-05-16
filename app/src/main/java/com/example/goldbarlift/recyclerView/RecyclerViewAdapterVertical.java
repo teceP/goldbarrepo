@@ -93,7 +93,7 @@ public class RecyclerViewAdapterVertical extends RecyclerView.Adapter<RecyclerVi
         @Override
         public void onClick(View view){
             if(clickListener != null) {
-                clickListener.onItemClick(view, getAdapterPosition());
+                clickListener.onItemClickVertical(view, getAdapterPosition());
             }
         }
 
@@ -112,8 +112,8 @@ public class RecyclerViewAdapterVertical extends RecyclerView.Adapter<RecyclerVi
     }
 
     public interface ItemClickListener{
-        void onItemClick(View view, int position);
-        void onLongItemClick(View view, int position);
+        void onItemClickVertical(View view, int position);
+        void onLongItemClickVertical(View view, int position);
     }
 
 }
