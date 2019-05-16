@@ -17,8 +17,8 @@
             android:title="Chat - placeholder" />
         <item
             android:id="@+id/menu_game"
-            android:icon="@drawable/ic_game_black_24dp"
-            android:title="Games - placeholder" />
+            android:icon="@drawable/ic_settings_black_24dp"
+            android:title="Settings" />
     </group>
 
     <item android:title="Infos and Donation">
