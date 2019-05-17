@@ -1,29 +1,17 @@
 package com.example.goldbarlift.storage;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
-public class InternalStorageManager {
+public interface InternalStorageManager {
 
-    boolean notification;
-    int distance;
+    public void safeObject(int distance, boolean notification) throws IOException;
 
-    //MEMENTO PATTERN FOR INTERNAL STORAGE
-    public InternalStorageManager(){
+    public void restoreSettings() throws IOException, FailedToRestoreFromInternalStorageException;
 
-        File file = new File("res/userdata");
+    public boolean getNotificationSetting();
 
+    public int getDistanceSetting();
 
-
-    }
-
-
-    public void loadStorage(){
-
-
-    }
-
-    public void safeStorage(){
-
-
-    }
 }

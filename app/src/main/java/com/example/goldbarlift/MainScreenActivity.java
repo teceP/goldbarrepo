@@ -1,6 +1,7 @@
 package com.example.goldbarlift;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -17,6 +18,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainScreenActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    public static final String SETTINGS = "SETTINGS";
+    public static final String DISTANCE_SETTING = "DISTANCE_SETTING";
+    public static final String NOTIFICATION_SETTING = "NOTIFICATION_SETTING";
 
     private DrawerLayout drawer;
 
@@ -93,8 +98,6 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
                 FragmentManager fm = getSupportFragmentManager();
                 SettingsDialogFragment sdf = SettingsDialogFragment.newInstance("title");
                 sdf.show(fm, "settings_title");
-
-                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsDialogFragment()).addToBackStack("tag").commit();
                 break;
             case R.id.donate:
                 Toast.makeText(this, "Paypal Email: mario.teklic77@googlemail.com :)", Toast.LENGTH_LONG).show();

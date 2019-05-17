@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="225dp"
         android:layout_marginTop="110dp"
-        android:text="00 km" />
+        android:text="0 km" />
 
 
     <SeekBar
