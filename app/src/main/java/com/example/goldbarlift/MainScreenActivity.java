@@ -1,11 +1,13 @@
 package com.example.goldbarlift;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,9 +15,16 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 public class MainScreenActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -59,6 +68,8 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
 
+        this.loadUserSettings();
+
         //BOTTOM NAVIGATION
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
@@ -85,11 +96,26 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
         toggle.syncState();
     }
 
+    public void loadUserSettings(){
+        //Load Settings from sharedPrefs and configure
+        View fragSettings = LayoutInflater.from(this).inflate(R.layout.fragment_settings, null);
+
+        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+
+        Switch pushNotification = fragSettings.findViewById(R.id.switchPushNotification);
+        SeekBar seekBar = fragSettings.findViewById(R.id.distanceSeekBar);
+        TextView kmTxt = fragSettings.findViewById(R.id.kmTxt);
+
+        pushNotification.setChecked(sharedPreferences.getBoolean(NOTIFICATION_SETTING, true));
+        seekBar.setProgress(sharedPreferences.getInt(DISTANCE_SETTING, 25));
+        kmTxt.setText(String.valueOf(sharedPreferences.getInt(DISTANCE_SETTING, 25)) + " km");
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch(menuItem.getItemId()){
-            case R.id.menu_chat:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentChat()).commit();
+            case R.id.menu_createPubcrawl:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentCreatePubcrawl()).commit();
                 break;
             case R.id.menu_fav:
                 startActivity(new Intent(MainScreenActivity.this, FavoritesActivity.class));
@@ -128,8 +154,8 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
                 case R.id.nav_home:
                     selectedFragment = new FragmentHome();
                     break;
-                case R.id.nav_pubcrawl:
-                    selectedFragment = new FragmentPubcrawlsInArea();
+                case R.id.nav_favorites:
+                    selectedFragment = new FragmentFavorites();
                     break;
                 case R.id.nav_map:
                     startActivity(new Intent(MainScreenActivity.this, MapsActivity.class));

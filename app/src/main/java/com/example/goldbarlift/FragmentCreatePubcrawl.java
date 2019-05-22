@@ -19,6 +19,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.goldbarlift.pubcrawl.Pubcrawl;
+import com.example.goldbarlift.sql.SqlManager;
 
 public class FragmentCreatePubcrawl extends Fragment implements View.OnClickListener, TimePickerFragment.onTimeClickListener, DatePickerFragment.onDateClickListener {
     private Button buttonCreatePubcrawl;
@@ -121,12 +122,14 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
                     String addresse = editTextAddress.getText().toString();
                     String tag = editTextTag.getText().toString();
                         Pubcrawl pubcrawl = new Pubcrawl(addresse, tag, time[1], time[0], date[2], date[1], date[0]);
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-                        //HIER NEUES EVENT HOCHLADEN
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+                        //HIER NEUES EVENT HOCHLADEN       SQL////////////////////////////////////////
+                        SqlManager sqlManager = new SqlManager(getActivity());
+                        sqlManager.addData(pubcrawl);
 
                         Toast.makeText(getActivity(), "Event is now live & public", Toast.LENGTH_LONG).show();
-                        getFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentPubcrawlsInArea()).commit();
+                        getFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentHome()).commit();
                     } catch (Exception e) {
                         Toast.makeText(getActivity(), "event has not been created, check your inputs", Toast.LENGTH_LONG).show();
                     }
@@ -152,6 +155,7 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
 
         return thisView;
     }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

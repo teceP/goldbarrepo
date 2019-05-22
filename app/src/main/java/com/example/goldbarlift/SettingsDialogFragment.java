@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,9 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.example.goldbarlift.MainScreenActivity.DISTANCE_SETTING;
 import static com.example.goldbarlift.MainScreenActivity.NOTIFICATION_SETTING;
 import static com.example.goldbarlift.MainScreenActivity.SETTINGS;
@@ -28,9 +31,6 @@ public class SettingsDialogFragment extends DialogFragment {
     private SeekBar seekbar;
     private TextView km;
     private Switch switchPushNotification;
-    private boolean notification;
-    private int distance;
-
     public SettingsDialogFragment(){
 
     }
@@ -45,36 +45,25 @@ public class SettingsDialogFragment extends DialogFragment {
         return dialog;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
 
-        //SET km Text + switch for push notification: from User internal Storage Data here
-        SharedPreferences sp = getContext().getSharedPreferences(SETTINGS, 0);
-        sp.getBoolean(NOTIFICATION_SETTING, this.notification);
-        sp.getInt(DISTANCE_SETTING, this.distance);
-
-        this.km.setText(String.valueOf(this.distance));
-        this.switchPushNotification.setChecked(this.notification);
-    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
+        //SET km Text + switch for push notification: from User internal Storage Data here
+        SharedPreferences sp = this.getActivity().getPreferences(MODE_PRIVATE);
+
         this.switchPushNotification = view.findViewById(R.id.switchPushNotification);
         this.km = view.findViewById(R.id.kmTxt);
-
-        //SET km Text + switch for push notification: from User internal Storage Data here
-        SharedPreferences sp = getContext().getSharedPreferences(SETTINGS, 0);
-        sp.getBoolean(NOTIFICATION_SETTING, this.notification);
-        sp.getInt(DISTANCE_SETTING, this.distance);
-
-        this.km.setText(String.valueOf(this.distance));
-        this.switchPushNotification.setChecked(this.notification);
-
         this.seekbar = view.findViewById(R.id.distanceSeekBar);
+
+        this.km.setText(String.valueOf(sp.getInt(DISTANCE_SETTING, 25)) + " km");
+        this.seekbar.setProgress(sp.getInt(DISTANCE_SETTING, 25));
+        this.switchPushNotification.setChecked(sp.getBoolean(NOTIFICATION_SETTING, true));
+
+        //SEEKBAR automatic changing km textfield
         this.seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -99,18 +88,21 @@ public class SettingsDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
 
-                //Save settings to internal storage on phone
+                //Save settings to SharedPreferences on phone
                 SeekBar sb = getView().findViewById(R.id.distanceSeekBar);
                 int distance = sb.getProgress();
 
                 Switch s = getView().findViewById(R.id.switchPushNotification);
                 boolean notification = s.isChecked();
 
-                SharedPreferences sp = getContext().getSharedPreferences(SETTINGS, 0);
-                SharedPreferences.Editor spEditor = sp.edit();
-                spEditor.putBoolean(NOTIFICATION_SETTING, notification).commit();
-                spEditor.putInt(DISTANCE_SETTING, distance).commit();
-                spEditor.apply();
+                Context context = getActivity();
+                SharedPreferences sharedPreferences = ((FragmentActivity) context).getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean(NOTIFICATION_SETTING, notification);
+                editor.putInt(DISTANCE_SETTING, distance);
+                editor.commit();
+
+                Toast.makeText(context, "Settings saved.", Toast.LENGTH_LONG).show();
 
                 //Gehe zum zuletzt geoeffneten Fragment zurueck
                 dismiss();
@@ -119,6 +111,7 @@ public class SettingsDialogFragment extends DialogFragment {
 
         return view;
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

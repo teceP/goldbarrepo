@@ -12,9 +12,9 @@
             android:icon="@drawable/ic_favorite_black_24dp"
             android:title="Favorites" />
         <item
-            android:id="@+id/menu_chat"
-            android:icon="@drawable/ic_chat_black_24dp"
-            android:title="Chat - placeholder" />
+            android:id="@+id/menu_createPubcrawl"
+            android:icon="@drawable/ic_group_black_24dp"
+            android:title="Create Pubcrawl" />
         <item
             android:id="@+id/menu_settings"
             android:icon="@drawable/ic_settings_black_24dp"

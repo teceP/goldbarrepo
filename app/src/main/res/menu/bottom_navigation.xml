@@ -10,8 +10,8 @@
 </group>
 
     <item
-        android:id="@+id/nav_pubcrawl"
-        android:icon="@drawable/ic_group_black_24dp"
+        android:id="@+id/nav_favorites"
+        android:icon="@drawable/ic_favorite_black_24dp"
         android:title="Pubcrawl">
     </item>
 

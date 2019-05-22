@@ -7,10 +7,16 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.goldbarlift.pubcrawl.Pubcrawl;
+import com.example.goldbarlift.sql.SqlManager;
 
 public class SplashActivity extends AppCompatActivity {
     private TextView tv;
     private ImageView iv;
+
+    SqlManager sqlManager;
 
 
     @Override
@@ -19,6 +25,8 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         tv = (TextView) findViewById(R.id.tv);
         iv = (ImageView) findViewById(R.id.iv);
+        sqlManager = new SqlManager(this);
+
         Animation myAnimation = AnimationUtils.loadAnimation(this, R.anim.mytransition);
         tv.startAnimation(myAnimation);
         iv.startAnimation(myAnimation);
@@ -26,6 +34,9 @@ public class SplashActivity extends AppCompatActivity {
         Thread timer = new Thread(){
             public void run() {
                 try {
+
+                    //SQL Download
+
                     sleep(2500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -37,5 +48,20 @@ public class SplashActivity extends AppCompatActivity {
             }
         };
         timer.start();
+    }
+
+    public void addData(Pubcrawl item){
+        boolean insertData = this.sqlManager.addData(item);
+
+        if(insertData){
+            toastMessage("Data has been uploaded");
+        }else{
+            toastMessage("not uploaded");
+        }
+
+    }
+
+    private void toastMessage(String message){
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }
