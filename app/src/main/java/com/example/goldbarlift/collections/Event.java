@@ -12,54 +12,75 @@ public class Event {
     private int ID;
     private String tag;
     private Drawable drawable;
-    private Date date;
+
+    private String optInofrmation;
     private String address;
     private int minute;
     private int hour;
 
-    public Event(String tag, Date date, String address, int minute, int hour, Drawable drawable) throws NumberOfCharactersToLongException {
+    private int year;
+    private int month;
+    private int day;
+
+    /**
+     * Use this constructor for vertical events
+     * @param address
+     * @param tag
+     * @param minute
+     * @param hour
+     * @param year
+     * @param month
+     * @param day
+     * @param drawable
+     * @throws NumberOfCharactersToLongException
+     */
+    public Event(int id, String address, String tag, String optInformation, int minute, int hour, int year, int month, int day, Drawable drawable) throws NumberOfCharactersToLongException {
         if(tag.length() > 10){
            throw new NumberOfCharactersToLongException(tag);
         }
+
+        this.ID = id;
+
+        this.optInofrmation = optInformation;
         this.drawable = drawable;
         this.tag = tag;
-        this.ID = generateNewId();
-        this.date = date;
+
         this.minute = minute;
         this.hour = hour;
+
+        this.year = year;
+        this.month = month;
+        this.day = day;
+
         this.address = address;
     }
 
-    public Event(String tag, Date date, String address, int minute, int hour) throws NumberOfCharactersToLongException {
-        if(tag.length() > 10){
-            throw new NumberOfCharactersToLongException(tag);
-        }
-        this.tag = tag;
-        this.ID = generateNewId();
-        this.date = date;
-        this.address = address;
-        this.minute = minute;
-        this.hour = hour;
+    public int getYear(){
+        return this.year;
+    }
+
+    public int getMonth(){
+        return this.month;
+    }
+
+    public int getDay(){
+        return this.day;
     }
 
     public int getMinute(){
         return this.minute;
     }
 
+    public String getOptInofrmation(){
+        return this.optInofrmation;
+    }
+
     public int getHour(){
         return this.hour;
     }
 
-    public Date getDateFormatted(){
-        return this.date;
-    }
-
     public String getAddressFormatted(){
         return this.address;
-    }
-
-    public void setdrawable(Drawable drawable){
-        this.drawable = drawable;
     }
 
     public Drawable getDrawable(){
@@ -82,7 +103,7 @@ public class Event {
 
     @Override
     public String toString(){
-        return this.ID + "";
+        return this.ID + " <~";
     }
 }
 

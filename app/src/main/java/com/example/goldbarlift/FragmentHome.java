@@ -1,36 +1,41 @@
 package com.example.goldbarlift;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.goldbarlift.collections.Event;
 import com.example.goldbarlift.collections.exception.NumberOfCharactersToLongException;
-import com.example.goldbarlift.local.helper.Address;
 import com.example.goldbarlift.recyclerView.RecyclerViewAdapter;
 import com.example.goldbarlift.recyclerView.RecyclerViewAdapterVertical;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.zip.Inflater;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class FragmentHome extends Fragment implements RecyclerViewAdapter.ItemClickListener, RecyclerViewAdapterVertical.ItemClickListener{
 
     private RecyclerViewAdapter adapterTop;
     private RecyclerViewAdapterVertical adapterBottom;
+    private static final String FAVORITE_PREF = "favorites";
+    private static final String DELIMETER = "~~";
+    private static final String ATTR = "###";
+    private static final char ID_ATTR = '%';
 
     @Nullable
     @Override
@@ -61,14 +66,16 @@ public class FragmentHome extends Fragment implements RecyclerViewAdapter.ItemCl
 
         try {
             String dummy = "Alexanderplatz 7a, 13224 Berlin";
-            eventsTop.add(new Event("HEY", new Date(), dummy,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
-            eventsTop.add(new Event("WHEY", new Date(), dummy,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
-            eventsTop.add(new Event("BERLIN", new Date(),dummy,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
-            eventsTop.add(new Event("HOORAY", new Date(), dummy,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
-            eventsTop.add(new Event("HAMBG", new Date(), dummy,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
-            eventsTop.add(new Event("lol", new Date(), dummy,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
-            eventsTop.add(new Event("tre", new Date(), dummy,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
-            eventsTop.add(new Event("rlly", new Date(), dummy,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
+            //Event(String address, String tag, int minute, int hour, int year, int month, int day, Drawable drawable)
+            eventsTop.add(new Event(7777,dummy, "test","optInfos", 10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
+            eventsTop.add(new Event(7777,dummy, "test","optInfos", 10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
+            eventsTop.add(new Event(7777,dummy, "test","optInfos", 10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
+            eventsTop.add(new Event(7777,dummy, "test","optInfos", 10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
+            eventsTop.add(new Event(7777,dummy, "test","optInfos", 10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
+            eventsTop.add(new Event(7777,dummy, "test","optInfos", 10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
+            eventsTop.add(new Event(7777,dummy, "test","optInfos",10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
+            eventsTop.add(new Event(7777,dummy, "test","optInfos", 10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
+            eventsTop.add(new Event(7777,dummy, "test","optInfos", 10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
 
 
             Drawable[] standarts = new Drawable[8];
@@ -86,8 +93,8 @@ public class FragmentHome extends Fragment implements RecyclerViewAdapter.ItemCl
             for(int i = 0; i < 7 ;i++){
                 random = ThreadLocalRandom.current().nextInt(0, 6 + 1);
 
-                //this.getResources().getDrawable(R.drawable.standart_recycl_background
-                eventsBottom.add(new Event("HEY", new Date(), "Hallo Street 2, 10315 Berlin", 45, 2, standarts[i]));
+                //Event(String address, String tag, int minute, int hour, int year, int month, int day, Drawable drawable)
+                eventsBottom.add(new Event(7777, "Hallo Street 2, 10315 Berlin", "myTag", "optInfos", 10,10,10, 45, 2, standarts[i]));
             }
 
         } catch (NumberOfCharactersToLongException e) {
@@ -110,6 +117,87 @@ public class FragmentHome extends Fragment implements RecyclerViewAdapter.ItemCl
         adapterBottom = new RecyclerViewAdapterVertical(this.getContext(), eventsBottom);
         adapterBottom.setClickListener(this);
         recyclerViewBottom.setAdapter(adapterBottom);
+
+        View recViewBottom = LayoutInflater.from(getContext()).inflate(R.layout.recyclerview_bottom_item, null);
+
+        final Switch favorite = recViewBottom.findViewById(R.id.switchNoticeEvent);
+        favorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SharedPreferences sp = getActivity().getPreferences(MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                String favs = sp.getString(FAVORITE_PREF, "");
+
+                //Hier noch den angeklickten view und nicht einfach immer nummer 2
+                //getCurrentPosition oder getClickedPosition ..
+                Event current = adapterBottom.getItem(2);
+
+                if(isChecked) {
+                    //Event(String address, String tag, int minute, int hour, int year, int month, int day, Drawable drawable)
+                    favs = favs + DELIMETER + ID_ATTR + current.getID() + ID_ATTR + current.getAddressFormatted() + ATTR + current.getTag() + ATTR + current.getOptInofrmation() + ATTR + current.getMinute() + ATTR + current.getHour()
+                            + ATTR + current.getYear() + ATTR + current.getMonth() + ATTR + current.getDay();
+
+                    //STANDART::::
+                    // old string + DELIMETER + ID_ATTR + id + ID_ATTR + ALL ATTRIBUTES
+
+                    editor.putString(FAVORITE_PREF, favs);
+                    editor.commit();
+                }else{
+                    String id = "" + current.getID();
+                    boolean on;
+                    String checker = "";
+
+                    //1. gehe bis zum ID Delimeter
+                    //2. pruefe ob id = folgende nummern sind
+                    //3. pruefe ob naechstes zeichen == ID_Attr ist, um zu pruefen ob ID hier endet (vollstaendig ist)
+                    //4. suche index vom zeichen, bis zu dem alles geloescht werden soll
+                    //5. replace von index i bis index end alles mit ""
+                    //6. wandle buf zu favs
+                    //7. speichere favs in prefs
+
+                    for(int i = 0; i < favs.length(); i++){
+                            char c = favs.charAt(i);
+                            if(c == ID_ATTR){
+                                on = true;
+
+                                while(on){
+                                    for(int x = 0; x < id.length(); x++){
+                                        checker = checker + favs.charAt(i+x);
+                                    }
+
+                                    //If id == checker AND next char of favs after id IS ID_ATTR (means, this id number ended here) then...
+                                    if(id.equals(checker) && favs.charAt(i+id.length()+1) == ID_ATTR){
+                                        //change String
+                                        //replace substring from index of i to index of second, next delimeter
+                                        boolean found = false;
+                                        int end = i;
+                                        while(!found){
+                                            if(favs.charAt(end) == '~'){
+                                                end = end + 1; //2 x ~..
+                                                found = true;
+                                            }
+                                            end++;
+                                        }
+                                        StringBuffer buf = new StringBuffer(favs);
+                                        buf = buf.replace(i, end, "");
+                                        favs = buf.toString();
+
+                                        editor.putString(FAVORITE_PREF, favs);
+                                        editor.commit();
+                                    }else{
+                                        on = false;
+                                        checker = "";
+                                    }
+                                }
+
+                            }
+                    }
+
+                }
+
+            }
+        });
+
     }
 
 

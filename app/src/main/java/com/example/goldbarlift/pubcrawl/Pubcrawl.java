@@ -1,5 +1,7 @@
 package com.example.goldbarlift.pubcrawl;
 
+import com.example.goldbarlift.collections.Event;
+import com.example.goldbarlift.firebase.FirebaseManager;
 import com.example.goldbarlift.pubcrawl.helper.Meeting;
 
 public class Pubcrawl {
@@ -10,13 +12,22 @@ public class Pubcrawl {
     private int id;
 
     public Pubcrawl(String address, String tag, int minute, int hour, int day, int month, int year){
+        this.tag = tag;
+        this.address = address;
+        this.meeting = new Meeting(hour, minute, day, month, year);
+        //this.id = this.createId();
 
-        tag = tag;
-        address = address;
-        meeting = new Meeting(hour, minute, day, month, year);
+    }
 
-        //getLastID from server...
-        //id = lastID+1
+    /**
+     * Creates a ID for an event.
+     * Format: [YYYYMMDD[CurrentTimeMILLIS]]
+     * @return
+     */
+    public int createId(){
+        String id =  "" + this.meeting.getYear() + this.meeting.getMonth() + this.meeting.getDay() + System.currentTimeMillis();
+
+        return Integer.parseInt(id);
     }
 
     public int getId() {
@@ -39,19 +50,5 @@ public class Pubcrawl {
         this.tag = tag;
     }
 
-    public Meeting getMeeting() {
-        return meeting;
     }
 
-    public void setMeeting(Meeting meeting) {
-        this.meeting = meeting;
-    }
-
-    public boolean pushOnline(){
-        return false;
-    }
-
-    public void deleteEvent(int id){
-
-    }
-}

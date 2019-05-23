@@ -12,7 +12,7 @@
     <item
         android:id="@+id/nav_favorites"
         android:icon="@drawable/ic_favorite_black_24dp"
-        android:title="Pubcrawl">
+        android:title="Favorites">
     </item>
 
     <item

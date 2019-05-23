@@ -18,6 +18,8 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.goldbarlift.collections.Event;
+import com.example.goldbarlift.firebase.FirebaseManager;
 import com.example.goldbarlift.pubcrawl.Pubcrawl;
 import com.example.goldbarlift.sql.SqlManager;
 
@@ -121,16 +123,19 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
                     try {
                     String addresse = editTextAddress.getText().toString();
                     String tag = editTextTag.getText().toString();
-                        Pubcrawl pubcrawl = new Pubcrawl(addresse, tag, time[1], time[0], date[2], date[1], date[0]);
+                        Event event = new Event(7777,addresse, tag, time[1], time[0], date[2], date[1], date[0], null);
+
+                     //   (String tag, Date date, String address, int minute, int hour, Drawable drawable)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
                         //HIER NEUES EVENT HOCHLADEN       SQL////////////////////////////////////////
-                        SqlManager sqlManager = new SqlManager(getActivity());
-                        sqlManager.addData(pubcrawl);
+                        FirebaseManager firebaseManager = new FirebaseManager(0);
+                        firebaseManager.addItem(event);
 
                         Toast.makeText(getActivity(), "Event is now live & public", Toast.LENGTH_LONG).show();
                         getFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentHome()).commit();
                     } catch (Exception e) {
+                        e.printStackTrace();
                         Toast.makeText(getActivity(), "event has not been created, check your inputs", Toast.LENGTH_LONG).show();
                     }
 
@@ -141,17 +146,10 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-                //pubcrawl = new Pubcrawl(editTextAddress.getText(), editTextTag.getTag(), editTextTime.get)
             }
         });
 
-
-        // buttonPubcrawlsInYourArea = this.thisView.findViewById(R.id.buttonPubcrawlsInYourArea);  Herausgenommen weil unnoetig
-        // buttonPubcrawlsInYourArea.setOnClickListener(this);
-
-
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-
 
         return thisView;
     }
@@ -160,8 +158,6 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
 
     }
 

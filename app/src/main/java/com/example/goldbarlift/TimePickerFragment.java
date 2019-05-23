@@ -29,8 +29,8 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 
     //    return new TimePickerDialog(getActivity(), this, hour, minute, DateFormat.is24HourFormat(getActivity()));
 
-        return new TimePickerDialog(getActivity(), this, hour, minute, true);
-
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), this, hour, minute, true);
+        return timePickerDialog;
     }
 
 

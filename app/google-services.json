@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "695783375082",
+    "firebase_url": "https://pubcrawl-d751f.firebaseio.com",
+    "project_id": "pubcrawl-d751f",
+    "storage_bucket": "pubcrawl-d751f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:695783375082:android:babab8a5c1f09013",
+        "android_client_info": {
+          "package_name": "com.example.goldbarlift"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "695783375082-11olbteipe42dlvv01nj7nj4hokbgl0t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.goldbarlift",
+            "certificate_hash": "75842309c5fa0372f5840ed23afe25c99efe0cdf"
+          }
+        },
+        {
+          "client_id": "695783375082-g2hvgki1mrbblrec18d5g05fojat3mst.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiCiditviwN-qEfkvMWzA_ENFB8cxeLOc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "695783375082-g2hvgki1mrbblrec18d5g05fojat3mst.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -111,6 +111,14 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
         kmTxt.setText(String.valueOf(sharedPreferences.getInt(DISTANCE_SETTING, 25)) + " km");
     }
 
+    public void loadVerticalEvents(){
+
+    }
+
+    public void loadHorizontalEvents(){
+
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch(menuItem.getItemId()){
