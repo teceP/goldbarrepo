@@ -1,14 +1,33 @@
 <resources>
 
         <!-- Base application theme. -->
-        <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <style
+            name="AppTheme"
+            parent="Theme.AppCompat.Light.NoActionBar">
             <item name="colorPrimary">#673AB7</item>
             <item name="colorPrimaryDark">#512DA8</item>
             <item name="colorAccent">#FF4081</item>
         </style>
 
-    <style name="SwitchTheme" parent="Theme.AppCompat.Light">
+    <style
+        name="SwitchTheme"
+        parent="Theme.AppCompat.Light">
         <item name="android:colorControlActivated">#148E13</item>
     </style>
+
+    <style
+        name="circlePicture"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:shape="oval">
+
+        <solid
+            android:color="#666666"/>
+
+        <size
+            android:width="120dp"
+            android:height="120dp"/>
+        ></style>
+
+
 
 </resources>

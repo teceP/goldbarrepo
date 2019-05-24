@@ -55,8 +55,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Event event = this.events.get(position);
        // holder.myView.setBackgroundColor(color);
 
+
         //HIER TAG ANSTATT ID WENN FERTIG
-        holder.myTextView.setText(event.getTag());
+        holder.myTextViewTag.setText(event.getTag());
     }
 
     @Override
@@ -66,13 +67,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
         View myView;
-        TextView myTextView;
+        TextView myTextViewTag;
 
         //Hier wird Text und Farbe des List Items bestimmt
         ViewHolder(View itemView){
             super(itemView);
             myView = itemView.findViewById(R.id.colorView);
-            myTextView = itemView.findViewById(R.id.textViewEventName);
+            myTextViewTag = itemView.findViewById(R.id.textViewEventName);
         }
 
         @Override
