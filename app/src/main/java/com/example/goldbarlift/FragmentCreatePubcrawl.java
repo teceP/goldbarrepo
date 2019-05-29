@@ -1,6 +1,5 @@
 package com.example.goldbarlift;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 
 import android.app.TimePickerDialog;
@@ -20,8 +19,6 @@ import android.widget.Toast;
 
 import com.example.goldbarlift.collections.Event;
 import com.example.goldbarlift.firebase.FirebaseManager;
-import com.example.goldbarlift.pubcrawl.Pubcrawl;
-import com.example.goldbarlift.sql.SqlManager;
 
 public class FragmentCreatePubcrawl extends Fragment implements View.OnClickListener, TimePickerFragment.onTimeClickListener, DatePickerFragment.onDateClickListener {
     private Button buttonCreatePubcrawl;
@@ -123,7 +120,7 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
                     try {
                     String addresse = editTextAddress.getText().toString();
                     String tag = editTextTag.getText().toString();
-                        Event event = new Event(7777,addresse, tag, time[1], time[0], date[2], date[1], date[0], null);
+                        Event event = new Event(7777,addresse, tag, "test", time[1], time[0], date[2], date[1], date[0], null);
 
                      //   (String tag, Date date, String address, int minute, int hour, Drawable drawable)
 

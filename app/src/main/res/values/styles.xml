@@ -15,19 +15,4 @@
         <item name="android:colorControlActivated">#148E13</item>
     </style>
 
-    <style
-        name="circlePicture"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:shape="oval">
-
-        <solid
-            android:color="#666666"/>
-
-        <size
-            android:width="120dp"
-            android:height="120dp"/>
-        ></style>
-
-
-
 </resources>

@@ -31,6 +31,13 @@
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/textViewRecyclerViewBottomOptInfos"
+        android:layout_width="310dp"
+        android:layout_height="67dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="35dp" />
+
+    <TextView
         android:id="@+id/textViewRecyclerViewBottomTime"
         android:text="Time"
         android:layout_width="wrap_content"
@@ -49,6 +56,22 @@
         android:textColor="@color/black"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="146dp" />
+
+    <TextView
+        android:id="@+id/textViewRecyclerViewBottomDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="107dp"
+        android:text="Day"
+        android:textColor="@color/black"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/textViewID"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 
     <Switch

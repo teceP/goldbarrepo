@@ -7,26 +7,33 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.goldbarlift.collections.Event;
 import com.example.goldbarlift.collections.exception.NumberOfCharactersToLongException;
+import com.example.goldbarlift.drawable.MyDrawables;
 import com.example.goldbarlift.recyclerView.RecyclerViewAdapterVertical;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class FragmentFavorites extends Fragment implements RecyclerViewAdapterVertical.ItemClickListener{
+import static android.content.Context.MODE_PRIVATE;
+
+public class FragmentFavorites extends Fragment implements RecyclerViewAdapterVertical.ItemClickListener {
 
     private RecyclerViewAdapterVertical adapter;
     private static final String FAVORITE_PREF = "favorites";
     private static final String DELIMETER = "~~";
     private static final String ATTR = "###";
-    private static final char ID_ATTR = '%';
 
     @Nullable
     @Override
@@ -47,56 +54,65 @@ public class FragmentFavorites extends Fragment implements RecyclerViewAdapterVe
         }
 
         //BOTTOM Events
-        RecyclerView recyclerViewBottom = getView().findViewById(R.id.recyclerViewHomeBottom);
+        RecyclerView recyclerViewBottom = getView().findViewById(R.id.recycler_view_favorites);
         LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL , false);
         recyclerViewBottom.setLayoutManager(verticalLayoutManager);
         adapter = new RecyclerViewAdapterVertical(this.getContext(), events);
         adapter.setClickListener(this);
         recyclerViewBottom.setAdapter(adapter);
+
+        //Button clear favorites
+        Button buttonClearFavorites = getView().findViewById(R.id.buttonClearFavorites);
+        buttonClearFavorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences sp = getActivity().getSharedPreferences(FAVORITE_PREF, MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.remove(FAVORITE_PREF).commit();
+
+               //////////////////////////////////////
+                /// HIER Fragment refreshen
+
+                Toast.makeText(getContext(), "All favorites removed", Toast.LENGTH_LONG).show();
+
+            }
+        });
     }
 
     private ArrayList<Event> getEvents() throws NumberOfCharactersToLongException {
         ArrayList<Event> events = new ArrayList<Event>();
 
-        SharedPreferences prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences prefs = getActivity().getSharedPreferences(FAVORITE_PREF, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         String buf = prefs.getString(FAVORITE_PREF, "");
 
-        //now cut this string into pieces with tokenizer or string.split
 
-        String[] elems = buf.split(DELIMETER);
+        if (buf.equals("")) {
+            Toast.makeText(getContext(), "no favorites found", Toast.LENGTH_LONG).show();
+            return events;
+        }
 
-        Drawable[] standarts = new Drawable[8];
-        standarts[0] = this.getResources().getDrawable(R.drawable.standart1);
-        standarts[1] = this.getResources().getDrawable(R.drawable.standart2);
-        standarts[2] = this.getResources().getDrawable(R.drawable.standart3);
-        standarts[3] = this.getResources().getDrawable(R.drawable.standart4);
-        standarts[4] = this.getResources().getDrawable(R.drawable.standart5);
-        standarts[5] = this.getResources().getDrawable(R.drawable.standart6);
-        standarts[6] = this.getResources().getDrawable(R.drawable.standart7);
-        standarts[7] = this.getResources().getDrawable(R.drawable.standart8);
+        //Get Drawables
+        MyDrawables md = new MyDrawables(this.getResources());
+        Drawable[] standarts = md.getDrawables();
 
+        //For random drawable pick
         int random;
 
+        //now cut this string into pieces with tokenizer or string.split
+        String[] elems = buf.split(DELIMETER);
 
         for(int i = 0; i < elems.length; i++){
 
-            //DELIMETER + ID_ATTR + id + ID_ATTR + addresse + ATTR + tag + ATTR + optInfos + ATTR + min + ATTR + hour + ATTR + year + ATTR + month + ATTR + day;
-
-            int year, month, day, minute, hour, id;
-            String addresse, tag, optInformation;
-
+            //cut into attributes
             String[] attribute = elems[i].split(ATTR);
-
-            //wie an id kommen
-            int idx = Integer.parseInt(attribute[0].substring(1, attribute[0].length()-1));
 
             //for random background image
             random = ThreadLocalRandom.current().nextInt(0, 6 + 1);
 
-           // public Event(int id, String address, String tag, String optInformation, int minute, int hour, int year, int month, int day, Drawable drawable)
-            Event elem = new Event(idx,  attribute[1], attribute[2], attribute[3],Integer.parseInt(attribute[4]),Integer.parseInt(attribute[5]),Integer.parseInt(attribute[6]),
-                    Integer.parseInt(attribute[7]), Integer.parseInt(attribute[8]), standarts[random] );
+            // public Event(int id, String address, String tag, String optInformation, int minute, int hour, int year, int month, int day, Drawable drawable)
+            Event elem = new Event(Integer.parseInt(attribute[0]),  attribute[1], attribute[2], attribute[3], Integer.parseInt(attribute[4]),Integer.parseInt(attribute[5]),Integer.parseInt(attribute[6]),
+                    Integer.parseInt(attribute[7]), Integer.parseInt(attribute[8]), standarts[random]);
             events.add(elem);
         }
 
@@ -110,6 +126,11 @@ public class FragmentFavorites extends Fragment implements RecyclerViewAdapterVe
 
     @Override
     public void onLongItemClickVertical(View view, int position) {
+
+    }
+
+    @Override
+    public void onSwitchChangedListener(View view, int position) {
 
     }
 }
