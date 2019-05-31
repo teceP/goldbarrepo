@@ -126,7 +126,7 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentCreatePubcrawl()).commit();
                 break;
             case R.id.menu_fav:
-                startActivity(new Intent(MainScreenActivity.this, FavoritesActivity.class));
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentFavorites()).commit();
                 break;
             case R.id.menu_settings:
                 FragmentManager fm = getSupportFragmentManager();
@@ -166,7 +166,7 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
                     selectedFragment = new FragmentFavorites();
                     break;
                 case R.id.nav_map:
-                    startActivity(new Intent(MainScreenActivity.this, MapsActivity.class));
+                    selectedFragment = new FragmentMaps();
                     break;
             }
 

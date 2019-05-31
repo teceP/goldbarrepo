@@ -71,7 +71,7 @@ public class FragmentFavorites extends Fragment implements RecyclerViewAdapterVe
                 editor.remove(FAVORITE_PREF).commit();
 
                //////////////////////////////////////
-                /// HIER Fragment refreshen
+               /// HIER Fragment refreshen
 
                 Toast.makeText(getContext(), "All favorites removed", Toast.LENGTH_LONG).show();
 
