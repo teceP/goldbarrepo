@@ -25,6 +25,7 @@ import com.example.goldbarlift.recyclerView.RecyclerViewAdapterVertical;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 import static android.content.Context.MODE_PRIVATE;
 
