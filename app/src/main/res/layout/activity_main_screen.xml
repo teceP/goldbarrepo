@@ -29,7 +29,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@android:color/white"
-        app:menu="@menu/top_left_menu" />
+        app:menu="@menu/top_left_menu"
+        app:headerLayout="@layout/nav_header"
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"
