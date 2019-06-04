@@ -80,11 +80,12 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
                 dialogFragment.show(getFragmentManager(), "timePicker");
             }
         });
-//////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////floatingactiobar/////////////////////////////
 
         editTextTag = this.thisView.findViewById(R.id.editTextTag);
         editTextOptInformation = this.thisView.findViewById(R.id.editTextOptInformation);
         editTextAddress = this.thisView.findViewById(R.id.editTextAddress);
+        editTextAddress.setAutofillHints(View.AUTOFILL_HINT_POSTAL_ADDRESS);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
         //CREATE PUBCRAWL EVENT
