@@ -12,9 +12,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class FirebaseManager {
     private final FirebaseDatabase database;
     private DatabaseReference ref;
+    private List<Event> events;
+
 
     private final static String EVENT = "event_item";
 
@@ -25,6 +30,7 @@ public class FirebaseManager {
      */
     public FirebaseManager(int flag){
         this.database = FirebaseDatabase.getInstance();
+        this.events = new LinkedList<Event>();
 
         if(flag == 0){
             ref = database.getReference(EVENT);
@@ -34,26 +40,37 @@ public class FirebaseManager {
 
     }
 
-    public void addItem(Event item){
-
-        ref.child(EVENT).setValue(item);
-    }
-
-
-    public void readFromDatabase(){
+    public List<Event> getEvents(){
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String value = dataSnapshot.getValue(String.class);
-                Log.d(EVENT, "Value is: " + value);
+
+                events.clear();
+
+                for(DataSnapshot item : dataSnapshot.getChildren()){
+
+                    Event current = item.getValue(Event.class);
+                    events.add(current);
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w(EVENT, "Failed to read value.", databaseError.toException());
+
             }
         });
+
+        return events;
+    }
+
+    public void addItem(Event item){
+        String id = ref.push().getKey();
+        item.setID(id);
+
+        ref.child(id).setValue(item);
+        Log.d(EVENT, "Uploaded item with id: " + id);
+
     }
 
 

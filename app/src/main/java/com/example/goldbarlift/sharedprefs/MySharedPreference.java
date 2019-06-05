@@ -41,7 +41,7 @@ public class MySharedPreference<T> {
 
     }
 
-    public boolean isFavorit(int id){
+    public boolean isFavorit(String id){
 
         this.sharedPreferences = this.view.getContext().getSharedPreferences(FAVORITE_PREF, MODE_PRIVATE);
         String favs = sharedPreferences.getString(FAVORITE_PREF, "");

@@ -9,7 +9,7 @@ import com.example.goldbarlift.local.helper.Address;
 import java.util.Date;
 
 public class Event {
-    private int ID;
+    private String ID;
     private String tag;
     private Drawable drawable;
 
@@ -34,7 +34,7 @@ public class Event {
      * @param drawable
      * @throws NumberOfCharactersToLongException
      */
-    public Event(int id, String address, String tag, String optInformation, int minute, int hour, int year, int month, int day, Drawable drawable) throws NumberOfCharactersToLongException {
+    public Event(String id, String address, String tag, String optInformation, int minute, int hour, int year, int month, int day, Drawable drawable) throws NumberOfCharactersToLongException {
         if(tag.length() > 10){
            throw new NumberOfCharactersToLongException(tag);
         }
@@ -53,6 +53,26 @@ public class Event {
         this.day = day;
 
         this.address = address;
+    }
+
+    public Event() throws NumberOfCharactersToLongException {
+        if(tag.length() > 10){
+            throw new NumberOfCharactersToLongException(tag);
+        }
+
+        this.ID = "IDNUMBER";
+
+        this.optInofrmation = "OPTINFOS";
+        this.tag = "TAG";
+
+        this.minute = 7;
+        this.hour = 7;
+
+        this.year = 7777;
+        this.month = 7;
+        this.day = 7;
+
+        this.address = "ADDRESS";
     }
 
     public int getYear(){
@@ -87,14 +107,12 @@ public class Event {
         return this.drawable;
     }
 
-    public int getID(){
+    public String getID(){
         return this.ID;
     }
 
-    private int generateNewId(){
-
-        //Get last ID, return +1
-        return 22;
+    public void setID(String id){
+        this.ID = id;
     }
 
     public String getTag(){

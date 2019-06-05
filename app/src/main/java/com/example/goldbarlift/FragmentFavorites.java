@@ -112,7 +112,7 @@ public class FragmentFavorites extends Fragment implements RecyclerViewAdapterVe
             random = ThreadLocalRandom.current().nextInt(0, 6 + 1);
 
             // public Event(int id, String address, String tag, String optInformation, int minute, int hour, int year, int month, int day, Drawable drawable)
-            Event elem = new Event(Integer.parseInt(attribute[0]),  attribute[1], attribute[2], attribute[3], Integer.parseInt(attribute[4]),Integer.parseInt(attribute[5]),Integer.parseInt(attribute[6]),
+            Event elem = new Event(attribute[0],  attribute[1], attribute[2], attribute[3], Integer.parseInt(attribute[4]),Integer.parseInt(attribute[5]),Integer.parseInt(attribute[6]),
                     Integer.parseInt(attribute[7]), Integer.parseInt(attribute[8]), standarts[random]);
             events.add(elem);
         }

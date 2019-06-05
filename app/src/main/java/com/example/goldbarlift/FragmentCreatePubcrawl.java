@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
     private DatePickerDialog datepicker;
     private Button buttonTimePicker;
     private Button buttonDatePicker;
+    private Button buttonChooseAddress;
 
     private View thisView;
 
@@ -84,8 +86,10 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
 
         editTextTag = this.thisView.findViewById(R.id.editTextTag);
         editTextOptInformation = this.thisView.findViewById(R.id.editTextOptInformation);
+
         editTextAddress = this.thisView.findViewById(R.id.editTextAddress);
         editTextAddress.setAutofillHints(View.AUTOFILL_HINT_POSTAL_ADDRESS);
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
         //CREATE PUBCRAWL EVENT
@@ -121,7 +125,7 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
                     try {
                     String addresse = editTextAddress.getText().toString();
                     String tag = editTextTag.getText().toString();
-                        Event event = new Event(7777,addresse, tag, "test", time[1], time[0], date[2], date[1], date[0], null);
+                        Event event = new Event("buf",addresse, tag, "test", time[1], time[0], date[2], date[1], date[0], null);
 
                      //   (String tag, Date date, String address, int minute, int hour, Drawable drawable)
 

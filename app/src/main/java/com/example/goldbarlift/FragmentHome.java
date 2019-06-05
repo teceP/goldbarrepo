@@ -19,11 +19,13 @@ import android.widget.Toast;
 import com.example.goldbarlift.collections.Event;
 import com.example.goldbarlift.collections.exception.NumberOfCharactersToLongException;
 import com.example.goldbarlift.drawable.MyDrawables;
+import com.example.goldbarlift.firebase.FirebaseManager;
 import com.example.goldbarlift.recyclerView.RecyclerViewAdapter;
 import com.example.goldbarlift.recyclerView.RecyclerViewAdapterVertical;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.zip.Inflater;
 
@@ -62,15 +64,15 @@ public class FragmentHome extends Fragment implements RecyclerViewAdapter.ItemCl
         try {
             String dummy = "Alexanderplatz 7a, 13224 Berlin";
             //Event(String address, String tag, int minute, int hour, int year, int month, int day, Drawable drawable)
-            eventsTop.add(new Event(7777,dummy, "test","optInfos", 10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
-            eventsTop.add(new Event(7777,dummy, "test","optInfos", 10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
-            eventsTop.add(new Event(7777,dummy, "test","optInfos", 10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
-            eventsTop.add(new Event(7777,dummy, "test","optInfos", 10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
-            eventsTop.add(new Event(7777,dummy, "test","optInfos", 10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
-            eventsTop.add(new Event(7777,dummy, "test","optInfos", 10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
-            eventsTop.add(new Event(7777,dummy, "test","optInfos",10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
-            eventsTop.add(new Event(7777,dummy, "test","optInfos", 10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
-            eventsTop.add(new Event(7777,dummy, "test","optInfos", 10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
+            eventsTop.add(new Event("buf",dummy, "test","optInfos", 10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
+            eventsTop.add(new Event("buf",dummy, "test","optInfos", 10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
+            eventsTop.add(new Event("buf",dummy, "test","optInfos", 10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
+            eventsTop.add(new Event("buf",dummy, "test","optInfos", 10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
+            eventsTop.add(new Event("buf",dummy, "test","optInfos", 10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
+            eventsTop.add(new Event("buf",dummy, "test","optInfos", 10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
+            eventsTop.add(new Event("buf",dummy, "test","optInfos",10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
+            eventsTop.add(new Event("buf",dummy, "test","optInfos", 10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
+            eventsTop.add(new Event("buf",dummy, "test","optInfos", 10,10,10,45, 2, this.getResources().getDrawable(R.drawable.standart1)));
 
             //Get Drawables (Background pictures)
             MyDrawables md = new MyDrawables(this.getResources());
@@ -86,13 +88,18 @@ public class FragmentHome extends Fragment implements RecyclerViewAdapter.ItemCl
                 /////////////////////////////
                 //Hier Events aus Database, erstellen
                 random = ThreadLocalRandom.current().nextInt(0, 6 + 1);
-                eventsBottom.add(new Event(7777, "Hallo Street 2, 10315 Berlin", "myTag", "optInfos", 10,10,10, 45, 2, standarts[i]));
+                eventsBottom.add(new Event("buf", "Hallo Street 2, 10315 Berlin", "myTag", "optInfos", 10,10,10, 45, 2, standarts[i]));
             }
 
         } catch (NumberOfCharactersToLongException e) {
             e.printStackTrace();
         }
 
+
+        //FIREBASE GET ITEMS
+        FirebaseManager firebaseManager = new FirebaseManager(0); //0 for events
+        List<Event> eventsBottomFromFirebase = firebaseManager.getEvents();
+        List<Event> eventsTopFromFirebase;
 
         //TOP Events
         RecyclerView recyclerViewTop = getView().findViewById(R.id.recyclerViewHomeTop);
@@ -106,7 +113,7 @@ public class FragmentHome extends Fragment implements RecyclerViewAdapter.ItemCl
         RecyclerView recyclerViewBottom = getView().findViewById(R.id.recyclerViewHomeBottom);
         LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL , false);
         recyclerViewBottom.setLayoutManager(verticalLayoutManager);
-        adapterBottom = new RecyclerViewAdapterVertical(this.getContext(), eventsBottom);
+        adapterBottom = new RecyclerViewAdapterVertical(this.getContext(), eventsBottomFromFirebase);
         adapterBottom.setClickListener(this);
         recyclerViewBottom.setAdapter(adapterBottom);
 
