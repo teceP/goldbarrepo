@@ -3,6 +3,9 @@ package com.example.goldbarlift;
 import android.app.DatePickerDialog;
 
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -44,6 +47,11 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.thisView =  inflater.inflate(R.layout.fragment_create_pubcrawl, container, false);
+
+        if(!this.isConnected()){
+            Toast.makeText(getActivity(), "No internet connection!", Toast.LENGTH_LONG).show();
+        }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////
         //DATE INSERT
         editTextDate = this.thisView.findViewById(R.id.editTextDate);
@@ -189,5 +197,11 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
     @Override
     public void onTimeSet(TimePicker timePicker, int i, int i1) {
         this.editTextTime.setText(""+i+":"+i1);
+    }
+
+    private boolean isConnected() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
