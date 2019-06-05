@@ -124,8 +124,9 @@ public class FragmentCreatePubcrawl extends Fragment implements View.OnClickList
 
                     try {
                     String addresse = editTextAddress.getText().toString();
+                    String optInfos = editTextOptInformation.getText().toString();
                     String tag = editTextTag.getText().toString();
-                        Event event = new Event("buf",addresse, tag, "test", time[1], time[0], date[2], date[1], date[0], null);
+                        Event event = new Event("buf",addresse, tag, optInfos, time[1], time[0], date[2], date[1], date[0], null);
 
                      //   (String tag, Date date, String address, int minute, int hour, Drawable drawable)
 

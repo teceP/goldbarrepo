@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.goldbarlift.collections.Event;
+import com.example.goldbarlift.collections.exception.NumberOfCharactersToLongException;
 import com.example.goldbarlift.pubcrawl.Pubcrawl;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,6 +20,17 @@ public class FirebaseManager {
     private final FirebaseDatabase database;
     private DatabaseReference ref;
     private List<Event> events;
+
+    private final String ATTR_ADDR = "addressFormatted";
+    private final String ATTR_DAY = "day";
+    private final String ATTR_HOUR = "hour";
+    private final String ATTR_ID = "id";
+    private final String ATTR_MINUTE = "minute";
+    private final String ATTR_MONTH = "month";
+    private final String ATTR_OPTINFOS = "optInformation";
+    private final String ATTR_TAG = "tag";
+    private final String ATTR_YEAR = "year";
+
 
 
     private final static String EVENT = "event_item";
@@ -49,9 +61,25 @@ public class FirebaseManager {
                 events.clear();
 
                 for(DataSnapshot item : dataSnapshot.getChildren()){
+                    String address = (String)item.child(ATTR_ADDR).getValue();
+                    String day = (String)item.child(ATTR_DAY).getValue();
+                    String hour = (String)item.child(ATTR_HOUR).getValue();
+                    String id = (String)item.child(ATTR_ID).getValue();
+                    String minute = (String)item.child(ATTR_MINUTE).getValue();
+                    String month = (String)item.child(ATTR_MONTH).getValue();
+                    String optInfos = (String)item.child(ATTR_OPTINFOS).getValue();
+                    String tag = (String)item.child(ATTR_TAG).getValue();
+                    String year = (String)item.child(ATTR_YEAR).getValue();
 
-                    Event current = item.getValue(Event.class);
-                    events.add(current);
+                    //String id, String address, String tag, String optInformation, int minute, int hour, int year, int month, int day,
+                    Event current = null;
+                    try {
+                        current = new Event(id, address, tag,optInfos,Integer.parseInt(minute),Integer.parseInt(hour),Integer.parseInt(year),Integer.parseInt(month),Integer.parseInt(day), null);
+                        events.add(current);
+                    } catch (NumberOfCharactersToLongException e) {
+                        e.printStackTrace();
+                    }
+                    //If null, dont load to arraylist
                 }
             }
 

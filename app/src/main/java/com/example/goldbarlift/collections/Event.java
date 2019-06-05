@@ -13,7 +13,7 @@ public class Event {
     private String tag;
     private Drawable drawable;
 
-    private String optInofrmation;
+    private String optInformation;
     private String address;
     private int minute;
     private int hour;
@@ -41,7 +41,7 @@ public class Event {
 
         this.ID = id;
 
-        this.optInofrmation = optInformation;
+        this.optInformation = optInformation;
         this.drawable = drawable;
         this.tag = tag;
 
@@ -53,26 +53,6 @@ public class Event {
         this.day = day;
 
         this.address = address;
-    }
-
-    public Event() throws NumberOfCharactersToLongException {
-        if(tag.length() > 10){
-            throw new NumberOfCharactersToLongException(tag);
-        }
-
-        this.ID = "IDNUMBER";
-
-        this.optInofrmation = "OPTINFOS";
-        this.tag = "TAG";
-
-        this.minute = 7;
-        this.hour = 7;
-
-        this.year = 7777;
-        this.month = 7;
-        this.day = 7;
-
-        this.address = "ADDRESS";
     }
 
     public int getYear(){
@@ -92,7 +72,7 @@ public class Event {
     }
 
     public String getOptInofrmation(){
-        return this.optInofrmation;
+        return this.optInformation;
     }
 
     public int getHour(){

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "695783375082-7dmp23t4roed85g4d428c7gkrjfhsnmq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.goldbarlift",
+            "certificate_hash": "7c11b12db4372cf102b45a603b7cf2325968211e"
+          }
+        },
+        {
           "client_id": "695783375082-11olbteipe42dlvv01nj7nj4hokbgl0t.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

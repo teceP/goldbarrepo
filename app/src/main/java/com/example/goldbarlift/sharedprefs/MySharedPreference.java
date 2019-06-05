@@ -15,7 +15,6 @@ public class MySharedPreference<T> {
     private static final String FAVORITE_PREF = "favorites";
     private static final String DELIMETER = "~~";
     private static final String ATTR = "###";
-    private static final char ID_ATTR = '%';
     private SharedPreferences sharedPreferences;
     private Context context;
     private View view;
