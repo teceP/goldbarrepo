@@ -7,10 +7,7 @@
     android:background="@color/white">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/menu_fav"
-            android:icon="@drawable/ic_favorite_black_24dp"
-            android:title="Favorites" />
+
         <item
             android:id="@+id/menu_createPubcrawl"
             android:icon="@drawable/ic_group_black_24dp"

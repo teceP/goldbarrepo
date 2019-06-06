@@ -32,8 +32,8 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyAaLYJNSKJpMhrqezL70a5WwEKbKgwsXJ0"/>
 
-        <activity android:name=".MainScreenActivity" />
-        <activity android:name=".SplashActivity">
+        <activity android:name=".model.activities.MainScreenActivity" />
+        <activity android:name=".model.activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
