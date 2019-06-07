@@ -1,5 +1,6 @@
 package com.example.goldbarlift.model.fragments;
 
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -27,10 +28,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-import java.util.zip.Inflater;
-
-import static java.util.zip.Inflater.*;
 
 public class FragmentHome extends Fragment implements RecyclerViewAdapter.ItemClickListener, RecyclerViewAdapterVertical.ItemClickListener {
 
@@ -54,6 +51,8 @@ public class FragmentHome extends Fragment implements RecyclerViewAdapter.ItemCl
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        final View viewHelper = view;
+
         ArrayList<Integer> colors = new ArrayList<>();
         colors.add(Color.BLUE);
 
@@ -61,8 +60,6 @@ public class FragmentHome extends Fragment implements RecyclerViewAdapter.ItemCl
         images.add(getResources().getDrawable(R.drawable.standart_recycl_background, null));
 
         ArrayList<Event> eventsTop = new ArrayList<>();
-        ArrayList<Event> eventsBottom = new ArrayList<>();
-
 
         String dummy = "Alexanderplatz 7a, 13224 Berlin";
         //Event(String address, String tag, int minute, int hour, int year, int month, int day, Drawable drawable)
@@ -90,12 +87,8 @@ public class FragmentHome extends Fragment implements RecyclerViewAdapter.ItemCl
 
                 eventsBottomFromFirebase.clear();
 
-                //App bricht ab, weils nicht an die Resourcen kommt, getActivity, getContext , beides Nullpointer
-                //Dann noch push notification, wenn neues event in der nähe eingestellt wurde
-                //dann standort, zu eventaddresse entfernung messen und je nachdem dann bei google maps
-                //Marker erstellen
-                View v = View.inflate(getContext(), R.layout.fragment_favorites, null );
-                MyDrawables myDrawables = new MyDrawables(v.getResources());
+               // View v = View.inflate(getContext(), R.layout.fragment_favorites, null );
+                MyDrawables myDrawables = new MyDrawables(viewHelper.getResources());
 
                 for (DataSnapshot item : dataSnapshot.getChildren()) {
 
@@ -123,16 +116,16 @@ public class FragmentHome extends Fragment implements RecyclerViewAdapter.ItemCl
                 Collections.reverse(eventsBottomFromFirebase);
 
                 //BOTTOM Events
-                RecyclerView recyclerViewBottom = getView().findViewById(R.id.recyclerViewHomeBottom);
+                RecyclerView recyclerViewBottom = view.findViewById(R.id.recyclerViewHomeBottom);
                 LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                 recyclerViewBottom.setLayoutManager(verticalLayoutManager);
-                adapterBottom = new RecyclerViewAdapterVertical(getContext(), eventsBottomFromFirebase);
-                recyclerViewBottom.setAdapter(adapterBottom);
+                try{
+                    adapterBottom = new RecyclerViewAdapterVertical(getContext(), eventsBottomFromFirebase);
+                    recyclerViewBottom.setAdapter(adapterBottom);
+                }catch (Exception e){
+                    adapterBottom.notifyDataSetChanged();
+                }
 
-
-                //VON favoriten zu home wechseln geht
-                //Von CreatePubcrawl zu Home (automatisch, nachdem man event hochlaedt) geht nicht -> nullpointer
-                //Event aus Shared Pref loeschen wenn man Regler nah links verschiebt
             }
 
             @Override

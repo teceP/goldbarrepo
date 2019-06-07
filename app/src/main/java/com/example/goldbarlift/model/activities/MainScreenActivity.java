@@ -82,7 +82,6 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
 
         //Username
         TextView navHeader = findViewById(R.id.navHeaderName);
-        //navHeader.setText("Mario");
 
         drawer = findViewById(R.id.drawer_layout);
 

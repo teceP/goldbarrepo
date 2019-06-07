@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,6 +37,8 @@ public class RecyclerViewAdapterVertical extends RecyclerView.Adapter<RecyclerVi
     private static final String FAVORITE_PREF = "favorites";
     private static final String DELIMETER = "~~";
     private static final String ATTR = "###";
+    private final static int FADE_DURATION = 1500; //FADE_DURATION in milliseconds
+
 
     /**
      * Another constructor, which sets the image automatically to a artful default picture.
@@ -74,8 +77,16 @@ public class RecyclerViewAdapterVertical extends RecyclerView.Adapter<RecyclerVi
         return new RecyclerViewAdapterVertical.ViewHolder(view);
     }
 
+    private void setFadeAnimation(View view) {
+        AlphaAnimation anim = new AlphaAnimation(0.2f, 1.0f);
+        anim.setDuration(1000);
+        anim.setFillAfter(true);
+        view.startAnimation(anim);
+    }
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapterVertical.ViewHolder holder, int position) {
+
         Event event = this.events.get(position);
         boolean isFavorite = false;
 
@@ -104,6 +115,8 @@ public class RecyclerViewAdapterVertical extends RecyclerView.Adapter<RecyclerVi
 
         //holder.imageView.setImageDrawable(getDrawable());
         holder.imageView.setImageDrawable(event.getDrawable());
+
+        setFadeAnimation(holder.itemView);
 
     }
 
@@ -246,10 +259,6 @@ public class RecyclerViewAdapterVertical extends RecyclerView.Adapter<RecyclerVi
         public boolean onLongClick(View v) {
             return false;
         }
-    }
-
-    public Event getItem(int id) {
-        return this.events.get(id);
     }
 
     public void setClickListener(ItemClickListener itemClickListener) {
