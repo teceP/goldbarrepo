@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.example.goldbarlift.R;
 import com.example.goldbarlift.data.Event;
 import com.example.goldbarlift.data.MyGeocoder;
+import com.example.goldbarlift.data.MyMarker;
 import com.example.goldbarlift.storage.firebase.FirebaseManager;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationListener;
@@ -37,6 +38,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -51,7 +53,7 @@ import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class FragmentMaps extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener, LocationListener, GoogleMap.OnMapLoadedCallback {
+public class FragmentMaps extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener, LocationListener, GoogleMap.OnMapLoadedCallback{
     private SupportMapFragment supportMapFragment;
     private GoogleMap gmap;
     private boolean mLocationPermissionsGranted = false;
@@ -61,13 +63,24 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback, Google
     public List<String> eventAddresses = new ArrayList<String>();
     public List<String> eventTags = new ArrayList<String>();
     private ProgressBar progressBar;
+    public ArrayList<MyMarker> markerPositions;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_maps, container, false);
 
+        try {
+            markerPositions = savedInstanceState.getParcelableArrayList("markers");
+        } catch (NullPointerException npe) {
+            Log.d("MAKEMARKERS", npe.getMessage());
+            //Nichts unternehmen, markerPosition wird belegt, nachdem dieses Fragment das erste mal aufgerufen wurde
+            //um beim naechsten oeffnen die Marker schneller zu setzen
+        }
+
         progressBar = v.findViewById(R.id.progressBarMap);
+        progressBar.setVisibility(View.INVISIBLE);
         progressBar.setIndeterminate(true);
         supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
@@ -86,59 +99,83 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback, Google
     }
 
 
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        gmap = googleMap;
+        if (gmap == null) {
+            Log.d("MAKEMARKER", "gmap == null");
 
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(getActivity(), "No permissions, to use your location", Toast.LENGTH_LONG).show();
-            requestPermissions(
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
-        }
+            gmap = googleMap;
 
-        //Falls nutzer nicht zugestimmt hat, sende nochmal info, dass Standort nicht benutzt werden kann
-        //Somit koennen auch keine Marker gesetzt werden, da je nachdem wie der nutzer es eingestellt hat,
-        //Keine marker mehr, ab einer Range angezeigt werden
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(getActivity(), "No permissions, to use your location", Toast.LENGTH_LONG).show();
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getActivity(), "No permissions, to use your location", Toast.LENGTH_LONG).show();
+                requestPermissions(
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
+            }
+
+            //Falls nutzer nicht zugestimmt hat, sende nochmal info, dass Standort nicht benutzt werden kann
+            //Somit koennen auch keine Marker gesetzt werden, da je nachdem wie der nutzer es eingestellt hat,
+            //Keine marker mehr, ab einer Range angezeigt werden
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getActivity(), "No permissions, to use your location", Toast.LENGTH_LONG).show();
+            } else {
+
+                LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                double longitude = location.getLongitude();
+                double latitude = location.getLatitude();
+
+                // HIER AKTUELLEN STANDORT NEHMEN UND IN KARTE ZOOMEN
+                LatLng current = new LatLng(latitude, longitude);
+                gmap.addMarker(new MarkerOptions().position(current).title("Your destination!"));
+                gmap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 13));
+
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(new LatLng(latitude, longitude))      // Sets the center of the map to location user
+                        .zoom(12)                   // Sets the zoom
+                        .bearing(0)                // Sets the orientation of the camera to east
+                        .tilt(40)                   // Sets the tilt of the camera to 30 degrees
+                        .build();                   // Creates a CameraPosition from the builder
+                gmap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+                gmap.getUiSettings().setCompassEnabled(true);
+                gmap.getUiSettings().setMyLocationButtonEnabled(true);
+                gmap.getUiSettings().setZoomControlsEnabled(true);
+                gmap.getUiSettings().setMapToolbarEnabled(true);
+            }
+
+            gmap.setOnMapLongClickListener(this);
+            gmap.setOnMapLoadedCallback(this);
         } else {
-
-            LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            double longitude = location.getLongitude();
-            double latitude = location.getLatitude();
-
-            // HIER AKTUELLEN STANDORT NEHMEN UND IN KARTE ZOOMEN
-            LatLng current = new LatLng(latitude, longitude);
-            gmap.addMarker(new MarkerOptions().position(current).title("Your destination!"));
-            gmap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 13));
-
-            CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(new LatLng(latitude, longitude))      // Sets the center of the map to location user
-                    .zoom(12)                   // Sets the zoom
-                    .bearing(0)                // Sets the orientation of the camera to east
-                    .tilt(40)                   // Sets the tilt of the camera to 30 degrees
-                    .build();                   // Creates a CameraPosition from the builder
-            gmap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-            gmap.getUiSettings().setCompassEnabled(true);
-            gmap.getUiSettings().setMyLocationButtonEnabled(true);
-            gmap.getUiSettings().setZoomControlsEnabled(true);
-            gmap.getUiSettings().setMapToolbarEnabled(true);
+            Log.d("MAKEMARKER", "gmap != null");
         }
-
-        gmap.setOnMapLongClickListener(this);
-        gmap.setOnMapLoadedCallback(this);
     }
 
     @Override
     public void onMapLoaded() {
-        this.setAllMarker();
+
+        if (this.markerPositions != null) {
+            Iterator<MyMarker> it = this.markerPositions.iterator();
+            Log.d("MAKEMARKERS", "markerPosition.List is not null! size=" + this.markerPositions.size());
+
+            while (it.hasNext()) {
+                MyMarker current = it.next();
+                gmap.addMarker(new MarkerOptions()
+                        .position(current.getPosition())
+                        .title(current.getTag() + ", " + current.getAddress())
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+            }
+        } else {
+            Log.d("MAKEMARKERS", "markerPosition.List is null");
+
+            progressBar.setVisibility(View.VISIBLE);
+            this.setAllMarker();
+
+        }
 
     }
+
     @Override
     public void onMapLongClick(LatLng point) {
 
@@ -192,15 +229,24 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback, Google
                     Iterator<String> it = eventAddresses.iterator();
                     Iterator<String> itTags = eventTags.iterator();
 
+                    if (markerPositions != null) {
+                        markerPositions.clear();
+                    } else {
+                        markerPositions = new ArrayList<>();
+                    }
+
+                    double distance = -1;
+
                     while (it.hasNext()) {
                         String bufAddress = it.next();
                         String bufTag = itTags.next();
 
                         LatLng element = geocoder.getLatLngFromAddress(bufAddress);
                         LatLng myPosition = new LatLng(latitude, longitude);
+                        Log.d("MAKEMARKERS", "myPosition==null: " + (myPosition == null) + " element==null: " + (element == null));
 
                         Log.d("MAKEMARKERS", "myPosition : " + myPosition.latitude + ":" + myPosition.longitude + "   --  element : " + element.latitude + ":" + element.longitude);
-                        double distance = -1;
+                        distance = -1;
 
                         try {
                             distance = SphericalUtil.computeDistanceBetween(myPosition, element);
@@ -210,11 +256,11 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback, Google
                         }
                         if (distance != -1) {
                             if (distance <= maxRange) {
+                                markerPositions.add(new MyMarker(element, address, tag));
                                 gmap.addMarker(new MarkerOptions()
                                         .position(element)
                                         .title(bufTag + ", " + bufAddress)
                                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-                                distance = -1;
                             }
                         }
                     }
@@ -226,7 +272,57 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback, Google
 
             }
         });
-        progressBar.setIndeterminate(false);
-        progressBar.setVisibility(View.INVISIBLE);
+
+        Thread waitForGUI = new Thread() {
+            public void run() {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                progressBar.setIndeterminate(false);
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+        };
+        waitForGUI.start();
+
+        try {
+            Log.d("MAKEMARKERS", "MarkerPos.List.size: " + this.markerPositions.size());
+        } catch (Exception e) {
+        }
+    }
+
+    @Override
+    public void onPause() {
+        Log.d("ONSAVEDINSTANCES", "getArguments == null : " + (getArguments()==null));
+        getArguments().putParcelableArrayList("markers", new ArrayList<MyMarker>(this.markerPositions));
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        Log.d("onResume", "called");
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            this.markerPositions = bundle.getParcelableArrayList("markers");
+            Log.d("onResume", "markerPositions==null" +
+                    ": " + (markerPositions==null));
+
+        }
+        super.onResume();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+
+        Log.d("ONSAVEDINSTANCES", "was called");
+        outState.putParcelableArrayList("markers", new ArrayList<MyMarker>(this.markerPositions));
+        super.onSaveInstanceState(outState);
     }
 }

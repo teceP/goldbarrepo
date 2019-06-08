@@ -1,14 +1,14 @@
 <resources>
-    <string name="app_name">Goldbar</string>
+    <string name="app_name">ComeTogether</string>
     <string name="title_activity_gmaps">Map</string>
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
     <string name="buttonCreatePubcrawl">Create Event</string>
-    <string name="buttonPubcrawlsInYourArea">Pubcrawls in your area</string>
+    <string name="buttonPubcrawlsInYourArea">Events in your area</string>
     <string name="textViewTime">Date and Time:</string>
     <string name="textViewAddress">Address:</string>
-    <string name="textViewCreateYourOwnPubcrawl">Create your on pubcrawl event!</string>
-    <string name="createOwnPubcrawl">Create your own pubcrawl event..</string>
+    <string name="textViewCreateYourOwnPubcrawl">Create your own event!</string>
+    <string name="createOwnPubcrawl">Create your own event..</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

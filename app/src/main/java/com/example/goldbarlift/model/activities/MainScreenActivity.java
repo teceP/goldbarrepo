@@ -140,6 +140,7 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
                     break;
                 case R.id.nav_map:
                     selectedFragment = new FragmentMaps();
+                    selectedFragment.setArguments(new Bundle());
                     break;
             }
 

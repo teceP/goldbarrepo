@@ -1,9 +1,11 @@
 package com.example.goldbarlift.model.fragments;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +25,7 @@ import com.example.goldbarlift.model.recyclerView.RecyclerViewAdapterVertical;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.zip.Inflater;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -32,7 +35,7 @@ public class FragmentFavorites extends Fragment implements RecyclerViewAdapterVe
     private static final String FAVORITE_PREF = "favorites";
     private static final String DELIMETER = "~~";
     private static final String ATTR = "###";
-    private TextView textViewNoFavorites;
+    private FloatingActionButton floatingActionButton;
 
     @Nullable
     @Override
@@ -71,10 +74,6 @@ public class FragmentFavorites extends Fragment implements RecyclerViewAdapterVe
                 SharedPreferences sp = getActivity().getSharedPreferences(FAVORITE_PREF, MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
                 editor.remove(FAVORITE_PREF).commit();
-
-               //////////////////////////////////////
-               /// HIER Fragment refreshen
-
 
                 Toast.makeText(getContext(), "All favorites removed", Toast.LENGTH_LONG).show();
 

@@ -38,7 +38,7 @@ public class RecyclerViewAdapterVertical extends RecyclerView.Adapter<RecyclerVi
     private static final String DELIMETER = "~~";
     private static final String ATTR = "###";
     private final static int FADE_DURATION = 1500; //FADE_DURATION in milliseconds
-
+    private FloatingActionButton floatingActionButton;
 
     /**
      * Another constructor, which sets the image automatically to a artful default picture.
@@ -103,6 +103,7 @@ public class RecyclerViewAdapterVertical extends RecyclerView.Adapter<RecyclerVi
         holder.textViewDay.setText(event.getDay() + "." + event.getMonth() + "." + event.getYear());
         holder.optInfos.setText(event.getOptInofrmation());
         holder.textViewID.setText(event.getID() + "");
+        floatingActionButton = holder.floatingRemoveFavorite;
 
         //Setze FloatingActionButton auf Clickable/Unclickable
         if (isFavorite) {
