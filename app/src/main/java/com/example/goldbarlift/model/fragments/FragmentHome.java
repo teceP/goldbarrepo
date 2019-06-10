@@ -1,6 +1,6 @@
 package com.example.goldbarlift.model.fragments;
 
-import android.content.res.Resources;
+
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -13,9 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import com.example.goldbarlift.R;
 import com.example.goldbarlift.data.Event;
 import com.example.goldbarlift.model.drawable.MyDrawables;
@@ -27,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -154,7 +153,6 @@ public class FragmentHome extends Fragment implements RecyclerViewAdapter.ItemCl
         recyclerViewTop.setAdapter(adapterTop);
 
     }
-
 
     @Override
     public void onItemClickHorizontal(View view, int position) {

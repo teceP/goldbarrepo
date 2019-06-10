@@ -7,4 +7,8 @@
     <color name="black">#100F0F</color>
     <color name="actionBarColor">#494747</color>
     <color name="mainScreenGrey">#D0D4D8</color>
+    <color name="orange">#FF9800</color>
+    <color name="transparent">#00FF9800</color>
+
+
 </resources>

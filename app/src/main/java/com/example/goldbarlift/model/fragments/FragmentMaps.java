@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.media.tv.TvContract;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -53,7 +54,7 @@ import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class FragmentMaps extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener, LocationListener, GoogleMap.OnMapLoadedCallback{
+public class FragmentMaps extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener, LocationListener, GoogleMap.OnMapLoadedCallback {
     private SupportMapFragment supportMapFragment;
     private GoogleMap gmap;
     private boolean mLocationPermissionsGranted = false;
@@ -64,6 +65,7 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback, Google
     public List<String> eventTags = new ArrayList<String>();
     private ProgressBar progressBar;
     public ArrayList<MyMarker> markerPositions;
+    Handler markerHandler = new Handler();
 
     @Nullable
     @Override
@@ -155,9 +157,15 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void onMapLoaded() {
 
-        if (this.markerPositions != null) {
-            Iterator<MyMarker> it = this.markerPositions.iterator();
-            Log.d("MAKEMARKERS", "markerPosition.List is not null! size=" + this.markerPositions.size());
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.bringToFront();
+
+        Log.d("MAKEMARKERS", "START SETTING MARKERS");
+
+
+        if (markerPositions != null) {
+            Iterator<MyMarker> it = markerPositions.iterator();
+            Log.d("MAKEMARKERS", "markerPosition.List is not null! size=" + markerPositions.size());
 
             while (it.hasNext()) {
                 MyMarker current = it.next();
@@ -169,7 +177,6 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback, Google
         } else {
             Log.d("MAKEMARKERS", "markerPosition.List is null");
 
-            progressBar.setVisibility(View.VISIBLE);
             this.setAllMarker();
 
         }
@@ -187,8 +194,9 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback, Google
     }
 
     public void setAllMarker() throws SecurityException {
+        Log.d("MAKEMARKERS", "START LOADING MARKERS");
+
         final String DISTANCE_SETTING = "DISTANCE_SETTING";
-        progressBar.bringToFront();
 
         SharedPreferences sp = getActivity().getPreferences(MODE_PRIVATE);
 
@@ -237,19 +245,28 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback, Google
 
                     double distance = -1;
 
+                    LatLng myPosition = new LatLng(latitude, longitude);
+                    Location posMe = new Location("me");
+                    posMe.setLongitude(geocoder.getCurrentLongitude(lm));
+                    posMe.setLatitude(geocoder.getCurrentLatitude(lm));
+
                     while (it.hasNext()) {
                         String bufAddress = it.next();
                         String bufTag = itTags.next();
 
                         LatLng element = geocoder.getLatLngFromAddress(bufAddress);
-                        LatLng myPosition = new LatLng(latitude, longitude);
+                        Location posItem = new Location("item");
+                        posItem.setLatitude(element.latitude);
+                        posItem.setLongitude(element.longitude);
+
                         Log.d("MAKEMARKERS", "myPosition==null: " + (myPosition == null) + " element==null: " + (element == null));
 
                         Log.d("MAKEMARKERS", "myPosition : " + myPosition.latitude + ":" + myPosition.longitude + "   --  element : " + element.latitude + ":" + element.longitude);
                         distance = -1;
 
                         try {
-                            distance = SphericalUtil.computeDistanceBetween(myPosition, element);
+                            distance = posMe.distanceTo(posItem);
+                            //distance = SphericalUtil.computeDistanceBetween(myPosition, element);
                             Log.d("MAKEMARKERS", "distance is: " + distance + " meter");
                         } catch (Exception e) {
 
@@ -294,7 +311,7 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public void onPause() {
-        Log.d("ONSAVEDINSTANCES", "getArguments == null : " + (getArguments()==null));
+        Log.d("ONSAVEDINSTANCES", "getArguments == null : " + (getArguments() == null));
         getArguments().putParcelableArrayList("markers", new ArrayList<MyMarker>(this.markerPositions));
         super.onPause();
     }
@@ -303,10 +320,10 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback, Google
     public void onResume() {
         Log.d("onResume", "called");
         Bundle bundle = getArguments();
-        if(bundle != null){
+        if (bundle != null) {
             this.markerPositions = bundle.getParcelableArrayList("markers");
             Log.d("onResume", "markerPositions==null" +
-                    ": " + (markerPositions==null));
+                    ": " + (markerPositions == null));
 
         }
         super.onResume();

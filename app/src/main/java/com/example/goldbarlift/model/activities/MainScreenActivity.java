@@ -30,7 +30,6 @@ import com.example.goldbarlift.model.fragments.SettingsDialogFragment;
 
 public class MainScreenActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final String SETTINGS = "SETTINGS";
     public static final String DISTANCE_SETTING = "DISTANCE_SETTING";
     public static final String NOTIFICATION_SETTING = "NOTIFICATION_SETTING";
 
@@ -63,8 +62,6 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
         super.onStart();
     }
 
-    //Wird aufgerufen, wenn App das erste mal geoeffnet wird
-    //Layout wird gesetzt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,9 +76,6 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
         //MENU BAR
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        //Username
-        TextView navHeader = findViewById(R.id.navHeaderName);
 
         drawer = findViewById(R.id.drawer_layout);
 

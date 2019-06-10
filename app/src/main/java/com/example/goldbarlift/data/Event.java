@@ -1,8 +1,10 @@
 package com.example.goldbarlift.data;
 
 import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Event {
+public class Event implements Parcelable {
     private String ID;
     private String tag;
     private Drawable drawable;
@@ -44,6 +46,31 @@ public class Event {
 
         this.address = address;
     }
+
+    protected Event(Parcel in) {
+        ID = in.readString();
+        tag = in.readString();
+        optInformation = in.readString();
+        address = in.readString();
+        minute = in.readInt();
+        hour = in.readInt();
+        year = in.readInt();
+        month = in.readInt();
+        day = in.readInt();
+        drawable = null;
+    }
+
+    public static final Creator<Event> CREATOR = new Creator<Event>() {
+        @Override
+        public Event createFromParcel(Parcel in) {
+            return new Event(in);
+        }
+
+        @Override
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
 
     public int getYear(){
         return this.year;
@@ -96,6 +123,24 @@ public class Event {
 
     public void setDrawable(Drawable drawable){
         this.drawable = drawable;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(ID);
+        dest.writeString(tag);
+        dest.writeString(optInformation);
+        dest.writeString(address);
+        dest.writeInt(minute);
+        dest.writeInt(hour);
+        dest.writeInt(year);
+        dest.writeInt(month);
+        dest.writeInt(day);
     }
 }
 

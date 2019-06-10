@@ -3,10 +3,10 @@ package com.example.goldbarlift.model.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -24,6 +24,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_splash);
         tv = (TextView) findViewById(R.id.tv);
         iv = (ImageView) findViewById(R.id.iv);
@@ -31,6 +32,9 @@ public class SplashActivity extends AppCompatActivity {
         Animation myAnimation = AnimationUtils.loadAnimation(this, R.anim.mytransition);
         tv.startAnimation(myAnimation);
         iv.startAnimation(myAnimation);
+
+        this.setUserSettings();
+
         final Intent i = new Intent(this, MainScreenActivity.class);
         Thread timer = new Thread(){
             public void run() {
@@ -40,6 +44,7 @@ public class SplashActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 finally{
+                    myAnimation.cancel();
                     startActivity(i);
                     finish();
             }
@@ -47,6 +52,11 @@ public class SplashActivity extends AppCompatActivity {
         };
         timer.start();
 
+    }
+
+    public void setUserSettings(){
+        ////////////////////////////////
+        //LOAD USER SETTINGS
         final String DISTANCE_SETTING = "DISTANCE_SETTING";
         final String NOTIFICATION_SETTING = "NOTIFICATION_SETTING";
 
@@ -62,7 +72,6 @@ public class SplashActivity extends AppCompatActivity {
         pushNotification.setChecked(sharedPreferences.getBoolean(NOTIFICATION_SETTING, true));
         seekBar.setProgress(sharedPreferences.getInt(DISTANCE_SETTING, 25));
         kmTxt.setText(String.valueOf(sharedPreferences.getInt(DISTANCE_SETTING, 25)) + " km");
-
     }
 
 }
