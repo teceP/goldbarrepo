@@ -2,7 +2,6 @@ package com.example.goldbarlift.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import com.google.android.gms.maps.model.LatLng;
 
 public class MyMarker implements Parcelable {

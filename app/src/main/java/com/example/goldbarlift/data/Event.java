@@ -19,6 +19,22 @@ public class Event implements Parcelable {
     private int day;
 
     /**
+     * Default Constructor.
+     */
+    public Event(){
+        //ID Gets setted, when uploading to database
+        tag = "default";
+        drawable = null;
+        optInformation = "default";
+        address = "Alexanderplatz";
+        minute = 7;
+        hour = 7;
+        year = 2020;
+        month = 7;
+        day = 7;
+    }
+
+    /**
      * Use this constructor for vertical events
      * @param address
      * @param tag
