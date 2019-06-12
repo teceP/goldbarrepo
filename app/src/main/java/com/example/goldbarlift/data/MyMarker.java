@@ -20,6 +20,10 @@ public class MyMarker implements Parcelable {
         this.tag = tag;
     }
 
+    public MyMarker(){
+
+    }
+
     protected MyMarker(Parcel in) {
         lat = in.readDouble();
         lng = in.readDouble();
@@ -63,5 +67,22 @@ public class MyMarker implements Parcelable {
         dest.writeDouble(lng);
         dest.writeString(address);
         dest.writeString(tag);
+    }
+
+    public void setLat(float lat, float lng){
+        this.lat = lat;
+        this.lng = lng;
+    }
+
+    public void setAddress(String address){
+        this.address = address;
+    }
+
+    public void setTag(String tag){
+        this.tag = tag;
+    }
+
+    public void setPosition(LatLng latLng){
+        this.position = latLng;
     }
 }

@@ -7,16 +7,13 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 
 import android.location.LocationManager;
-import android.media.tv.TvContract;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.ContentLoadingProgressBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.goldbarlift.R;
-import com.example.goldbarlift.data.Event;
+import com.example.goldbarlift.data.MapOperator;
 import com.example.goldbarlift.data.MyGeocoder;
 import com.example.goldbarlift.data.MyMarker;
 import com.example.goldbarlift.storage.firebase.FirebaseManager;
@@ -46,7 +43,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.maps.android.SphericalUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -65,13 +61,16 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback, Google
     public List<String> eventTags = new ArrayList<String>();
     private ProgressBar progressBar;
     public ArrayList<MyMarker> markerPositions;
-    Handler markerHandler = new Handler();
+    private LocationManager lm;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_maps, container, false);
+
+        this.lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
         try {
             markerPositions = savedInstanceState.getParcelableArrayList("markers");
@@ -123,18 +122,15 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback, Google
                 Toast.makeText(getActivity(), "No permissions, to use your location", Toast.LENGTH_LONG).show();
             } else {
 
-                LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-                Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                double longitude = location.getLongitude();
-                double latitude = location.getLatitude();
-
                 // HIER AKTUELLEN STANDORT NEHMEN UND IN KARTE ZOOMEN
-                LatLng current = new LatLng(latitude, longitude);
+                Location location = MapOperator.getLastLocation(lm);
+                LatLng current = MapOperator.getCurrentLatLng(location.getLatitude(), location.getLongitude());
+
                 gmap.addMarker(new MarkerOptions().position(current).title("Your destination!"));
-                gmap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 13));
+                gmap.animateCamera(CameraUpdateFactory.newLatLngZoom(current, 13));
 
                 CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(new LatLng(latitude, longitude))      // Sets the center of the map to location user
+                        .target(current)      // Sets the center of the map to location user
                         .zoom(12)                   // Sets the zoom
                         .bearing(0)                // Sets the orientation of the camera to east
                         .tilt(40)                   // Sets the tilt of the camera to 30 degrees
@@ -162,25 +158,33 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback, Google
 
         Log.d("MAKEMARKERS", "START SETTING MARKERS");
 
+        Thread thread = new Thread(new Runnable() {
 
-        if (markerPositions != null) {
-            Iterator<MyMarker> it = markerPositions.iterator();
-            Log.d("MAKEMARKERS", "markerPosition.List is not null! size=" + markerPositions.size());
+            @Override
+            public void run() {
+                if (markerPositions != null) {
+                    Iterator<MyMarker> it = markerPositions.iterator();
+                    Log.d("MAKEMARKERS", "markerPosition.List is not null! size=" + markerPositions.size());
 
-            while (it.hasNext()) {
-                MyMarker current = it.next();
-                gmap.addMarker(new MarkerOptions()
-                        .position(current.getPosition())
-                        .title(current.getTag() + ", " + current.getAddress())
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                    while (it.hasNext()) {
+                        MyMarker current = it.next();
+                        gmap.addMarker(new MarkerOptions()
+                                .position(current.getPosition())
+                                .title(current.getTag() + ", " + current.getAddress())
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                    }
+                } else {
+                    Log.d("MAKEMARKERS", "markerPosition.List is null");
+
+
+                    setAllMarker();
+                }
+
+                //   this.setAllMarker();
+
             }
-        } else {
-            Log.d("MAKEMARKERS", "markerPosition.List is null");
-
-            this.setAllMarker();
-
-        }
-
+        });
+        thread.start();
     }
 
     @Override
@@ -196,16 +200,11 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback, Google
     public void setAllMarker() throws SecurityException {
         Log.d("MAKEMARKERS", "START LOADING MARKERS");
 
-        final String DISTANCE_SETTING = "DISTANCE_SETTING";
-
-        SharedPreferences sp = getActivity().getPreferences(MODE_PRIVATE);
-
-        //to get it in meter, not in km
-        final int maxRange = sp.getInt(DISTANCE_SETTING, 25) * 1000;
+        //Distance setting in metre
+        final int maxRange = MapOperator.getDistanceSettings(getActivity());
 
         //My LatLng
-        LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location location = MapOperator.getLastLocation(lm);
         final double longitude = location.getLongitude();
         final double latitude = location.getLatitude();
 
@@ -220,68 +219,52 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback, Google
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d("FIREBASE_LOG", "OnDataChange running");
 
-                eventAddresses.clear();
-                eventTags.clear();
+                if (markerPositions == null) {
+                    markerPositions = new ArrayList<>();
+                }
+
+                markerPositions.clear();
 
                 for (DataSnapshot item : dataSnapshot.getChildren()) {
                     String address = item.child(FirebaseManager.ATTR_ADDR).getValue(String.class);
                     String tag = item.child(FirebaseManager.ATTR_TAG).getValue(String.class);
                     Log.d("MAKEMARKERS", "add address: " + address + " tag: " + tag);
 
-                    eventAddresses.add(address);
-                    eventTags.add(tag);
-
-                    //Now look up, which events are in range
-                    Log.d("MAKEMARKERS", "ITERATOR ENTRYS: " + eventAddresses.size() + " ... check with distance from settings: " + maxRange + "meter");
-
-                    Iterator<String> it = eventAddresses.iterator();
-                    Iterator<String> itTags = eventTags.iterator();
-
-                    if (markerPositions != null) {
-                        markerPositions.clear();
-                    } else {
-                        markerPositions = new ArrayList<>();
-                    }
-
-                    double distance = -1;
-
-                    LatLng myPosition = new LatLng(latitude, longitude);
-                    Location posMe = new Location("me");
-                    posMe.setLongitude(geocoder.getCurrentLongitude(lm));
-                    posMe.setLatitude(geocoder.getCurrentLatitude(lm));
-
-                    while (it.hasNext()) {
-                        String bufAddress = it.next();
-                        String bufTag = itTags.next();
-
-                        LatLng element = geocoder.getLatLngFromAddress(bufAddress);
-                        Location posItem = new Location("item");
-                        posItem.setLatitude(element.latitude);
-                        posItem.setLongitude(element.longitude);
-
-                        Log.d("MAKEMARKERS", "myPosition==null: " + (myPosition == null) + " element==null: " + (element == null));
-
-                        Log.d("MAKEMARKERS", "myPosition : " + myPosition.latitude + ":" + myPosition.longitude + "   --  element : " + element.latitude + ":" + element.longitude);
-                        distance = -1;
-
-                        try {
-                            distance = posMe.distanceTo(posItem);
-                            //distance = SphericalUtil.computeDistanceBetween(myPosition, element);
-                            Log.d("MAKEMARKERS", "distance is: " + distance + " meter");
-                        } catch (Exception e) {
-
-                        }
-                        if (distance != -1) {
-                            if (distance <= maxRange) {
-                                markerPositions.add(new MyMarker(element, address, tag));
-                                gmap.addMarker(new MarkerOptions()
-                                        .position(element)
-                                        .title(bufTag + ", " + bufAddress)
-                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-                            }
-                        }
-                    }
+                    MyMarker current = new MyMarker(geocoder.getLatLngFromAddress(address), address, tag);
+                    markerPositions.add(current);
                 }
+
+                //Now look up, which events are in range
+                Log.d("MAKEMARKERS", "ITERATOR ENTRYS: " + eventAddresses.size() + " ... check with distance from settings: " + maxRange + "meter");
+
+                Iterator<MyMarker> it = markerPositions.iterator();
+                Location myLocation = new Location("me");
+                myLocation.setLatitude(latitude);
+                myLocation.setLongitude(longitude);
+
+                boolean isNear;
+
+                while (it.hasNext()) {
+                    MyMarker current = it.next();
+
+                    LatLng element = geocoder.getLatLngFromAddress(current.getAddress());
+                    Location posItem = new Location("item");
+                    posItem.setLatitude(element.latitude);
+                    posItem.setLongitude(element.longitude);
+
+                    //LOG DATA
+                    Log.d("MAKEMARKERS", "myPosition==null: " + (myLocation == null) + " element==null: " + (element == null));
+                    Log.d("MAKEMARKERS", "myPosition : " + myLocation.getLatitude() + ":" + myLocation.getLongitude() + "   --  element : " + element.latitude + ":" + element.longitude);
+
+                    isNear = MapOperator.isNear(myLocation, posItem, maxRange);
+
+                    if (isNear) {
+                        markerPositions.add(MapOperator.createMyMarker(element, current.getTag(), current.getAddress()));
+                        gmap.addMarker(MapOperator.createMarkerOptions(element, current.getTag(), current.getAddress()));
+                    }
+
+                }
+
             }
 
             @Override
@@ -312,7 +295,11 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void onPause() {
         Log.d("ONSAVEDINSTANCES", "getArguments == null : " + (getArguments() == null));
-        getArguments().putParcelableArrayList("markers", new ArrayList<MyMarker>(this.markerPositions));
+
+        if (this.markerPositions != null) {
+            getArguments().putParcelableArrayList("markers", this.markerPositions);
+        }
+
         super.onPause();
     }
 
