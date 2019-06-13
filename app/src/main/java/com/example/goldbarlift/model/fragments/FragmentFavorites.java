@@ -1,6 +1,5 @@
 package com.example.goldbarlift.model.fragments;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,28 +13,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.goldbarlift.R;
+import com.example.goldbarlift.controllers.EventCoordinatorFavorites;
 import com.example.goldbarlift.data.Event;
 import com.example.goldbarlift.exceptions.NumberOfCharactersToLongException;
-import com.example.goldbarlift.model.drawable.MyDrawables;
+import com.example.goldbarlift.data.MyDrawables;
 import com.example.goldbarlift.model.recyclerView.RecyclerViewAdapterVertical;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.zip.Inflater;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class FragmentFavorites extends Fragment implements RecyclerViewAdapterVertical.ItemClickListener {
 
     private RecyclerViewAdapterVertical adapter;
-    private static final String FAVORITE_PREF = "favorites";
-    private static final String DELIMETER = "~~";
-    private static final String ATTR = "###";
-    private FloatingActionButton floatingActionButton;
 
     @Nullable
     @Override
@@ -47,12 +39,14 @@ public class FragmentFavorites extends Fragment implements RecyclerViewAdapterVe
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        EventCoordinatorFavorites eventCoordinatorFavorites = new EventCoordinatorFavorites();
+
         ArrayList<Event> events = null;
         try {
-            events = this.getEvents();
-        } catch (NumberOfCharactersToLongException e) {
+            events = eventCoordinatorFavorites.getFavoritEvents(getContext(), getResources());
+        } catch (Exception e) {
             e.printStackTrace();
-            //Anders haendeln
+            Log.d("MYERROR", "Event Objekt konnte nicht erstellt werden. " + e.getMessage());
         }
 
         //Die zuletzt hinzugefuegten nach oben tauschen
@@ -66,52 +60,6 @@ public class FragmentFavorites extends Fragment implements RecyclerViewAdapterVe
         adapter.setClickListener(this);
         recyclerViewBottom.setAdapter(adapter);
 
-        //Button clear favorites
-        Button buttonClearFavorites = getView().findViewById(R.id.buttonClearFavorites);
-        buttonClearFavorites.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences sp = getActivity().getSharedPreferences(FAVORITE_PREF, MODE_PRIVATE);
-                SharedPreferences.Editor editor = sp.edit();
-                editor.remove(FAVORITE_PREF).commit();
-
-                Toast.makeText(getContext(), "All favorites removed", Toast.LENGTH_LONG).show();
-
-            }
-        });
-    }
-
-
-    private ArrayList<Event> getEvents() throws NumberOfCharactersToLongException {
-        ArrayList<Event> events = new ArrayList<Event>();
-
-        SharedPreferences prefs = getContext().getSharedPreferences(FAVORITE_PREF, MODE_PRIVATE);
-        String buf = prefs.getString(FAVORITE_PREF, "");
-
-        Log.d("DELETE_FAV", "Open Favorite Frag with this sharedPrevContent: " + buf);
-        if (buf.equals("")) {
-            Toast.makeText(getContext(), "no favorites found", Toast.LENGTH_LONG).show();
-            return events;
-        }
-
-        //Get Drawables
-        MyDrawables md = new MyDrawables(this.getResources());
-
-        //now cut this string into pieces with tokenizer or string.split
-        String[] elems = buf.split(DELIMETER);
-
-        for(int i = 0; i < elems.length; i++){
-
-            //cut into attributes
-            String[] attribute = elems[i].split(ATTR);
-
-            // public Event(String id, String address, String tag, String optInformation, int minute, int hour, int year, int month, int day, Drawable drawable)
-            Event elem = new Event(attribute[0],  attribute[1], attribute[2], attribute[3], Integer.parseInt(attribute[4]),Integer.parseInt(attribute[5]),Integer.parseInt(attribute[6]),
-                    Integer.parseInt(attribute[7]), Integer.parseInt(attribute[8]), md.getRandomDrawable());
-            events.add(elem);
-        }
-
-        return events;
     }
 
     @Override

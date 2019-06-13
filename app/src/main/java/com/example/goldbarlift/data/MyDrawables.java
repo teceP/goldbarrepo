@@ -1,4 +1,4 @@
-package com.example.goldbarlift.model.drawable;
+package com.example.goldbarlift.data;
 
 import android.content.Context;
 import android.content.res.Resources;

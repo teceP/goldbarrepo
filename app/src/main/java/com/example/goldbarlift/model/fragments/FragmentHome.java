@@ -15,8 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import com.example.goldbarlift.R;
+import com.example.goldbarlift.controllers.EventCoordinatorHome;
 import com.example.goldbarlift.data.Event;
-import com.example.goldbarlift.model.drawable.MyDrawables;
+import com.example.goldbarlift.data.MyDrawables;
 import com.example.goldbarlift.storage.firebase.FirebaseManager;
 import com.example.goldbarlift.model.recyclerView.RecyclerViewAdapter;
 import com.example.goldbarlift.model.recyclerView.RecyclerViewAdapterVertical;
@@ -58,21 +59,6 @@ public class FragmentHome extends Fragment implements RecyclerViewAdapter.ItemCl
 
         ArrayList<Drawable> images = new ArrayList<>();
         images.add(getResources().getDrawable(R.drawable.standart_recycl_background, null));
-
-        ArrayList<Event> eventsTop = new ArrayList<>();
-
-        String dummy = "Alexanderplatz 7a, 13224 Berlin";
-        //Event(String address, String tag, int minute, int hour, int year, int month, int day, Drawable drawable)
-        eventsTop.add(new Event("buf", dummy, "test", "optInfos", 10, 10, 10, 45, 2, this.getResources().getDrawable(R.drawable.standart1)));
-        eventsTop.add(new Event("buf", dummy, "test", "optInfos", 10, 10, 10, 45, 2, this.getResources().getDrawable(R.drawable.standart1)));
-        eventsTop.add(new Event("buf", dummy, "test", "optInfos", 10, 10, 10, 45, 2, this.getResources().getDrawable(R.drawable.standart1)));
-        eventsTop.add(new Event("buf", dummy, "test", "optInfos", 10, 10, 10, 45, 2, this.getResources().getDrawable(R.drawable.standart1)));
-        eventsTop.add(new Event("buf", dummy, "test", "optInfos", 10, 10, 10, 45, 2, this.getResources().getDrawable(R.drawable.standart1)));
-        eventsTop.add(new Event("buf", dummy, "test", "optInfos", 10, 10, 10, 45, 2, this.getResources().getDrawable(R.drawable.standart1)));
-        eventsTop.add(new Event("buf", dummy, "test", "optInfos", 10, 10, 10, 45, 2, this.getResources().getDrawable(R.drawable.standart1)));
-        eventsTop.add(new Event("buf", dummy, "test", "optInfos", 10, 10, 10, 45, 2, this.getResources().getDrawable(R.drawable.standart1)));
-        eventsTop.add(new Event("buf", dummy, "test", "optInfos", 10, 10, 10, 45, 2, this.getResources().getDrawable(R.drawable.standart1)));
-
 
         /////////////////////////////
         //Hier Events aus Database laden
@@ -134,6 +120,16 @@ public class FragmentHome extends Fragment implements RecyclerViewAdapter.ItemCl
             }
         });
 
+        RecyclerView recyclerViewBottom = view.findViewById(R.id.recyclerViewHomeBottom);
+        LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerViewBottom.setLayoutManager(verticalLayoutManager);
+        try{
+            adapterBottom = new RecyclerViewAdapterVertical(getContext(), eventsBottomFromFirebase);
+            recyclerViewBottom.setAdapter(adapterBottom);
+        }catch (Exception e){
+            adapterBottom.notifyDataSetChanged();
+        }
+
         /////////////////////////////
         //Hier Events aus Database mit Drawable versehen
         //Get Drawables (Background pictures)
@@ -145,10 +141,11 @@ public class FragmentHome extends Fragment implements RecyclerViewAdapter.ItemCl
         }
 
         //TOP Events
+        ArrayList<Event> eventsHorizontal = EventCoordinatorHome.getHorizontalEvents(this.getResources());
         RecyclerView recyclerViewTop = getView().findViewById(R.id.recyclerViewHomeTop);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerViewTop.setLayoutManager(horizontalLayoutManager);
-        adapterTop = new RecyclerViewAdapter(this.getContext(), colors, eventsTop);
+        adapterTop = new RecyclerViewAdapter(this.getContext(), colors, eventsHorizontal);
         adapterTop.setClickListener(this);
         recyclerViewTop.setAdapter(adapterTop);
 
